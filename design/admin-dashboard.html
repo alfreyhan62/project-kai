@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>e-ARSIP KAI DIVRE III - Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-surface": "#2f3034",
+                        "outline-variant": "#c4c6d1",
+                        "on-primary-fixed-variant": "#28457e",
+                        "on-error": "#ffffff",
+                        "surface-variant": "#e3e2e7",
+                        "on-primary-fixed": "#001943",
+                        "primary-fixed-dim": "#afc6ff",
+                        "on-primary-container": "#7994d2",
+                        "on-tertiary-fixed-variant": "#733515",
+                        "primary-fixed": "#d9e2ff",
+                        "outline": "#747781",
+                        "on-tertiary-fixed": "#351000",
+                        "tertiary-container": "#521d00",
+                        "surface-container-highest": "#e3e2e7",
+                        "tertiary-fixed-dim": "#ffb694",
+                        "on-secondary-container": "#234585",
+                        "on-surface-variant": "#444750",
+                        "error-container": "#ffdad6",
+                        "tertiary": "#310e00",
+                        "tertiary-fixed": "#ffdbcc",
+                        "on-primary": "#ffffff",
+                        "surface-dim": "#dad9df",
+                        "surface-tint": "#425d97",
+                        "surface-container": "#eeedf3",
+                        "on-tertiary-container": "#d1815a",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-high": "#e9e7ed",
+                        "surface-bright": "#faf8fe",
+                        "on-background": "#1a1b1f",
+                        "background": "#faf8fe",
+                        "surface": "#faf8fe",
+                        "secondary-container": "#96b5fd",
+                        "primary": "#00173e",
+                        "on-surface": "#1a1b1f",
+                        "on-secondary-fixed-variant": "#224585",
+                        "inverse-on-surface": "#f1f0f6",
+                        "inverse-primary": "#afc6ff",
+                        "secondary-fixed": "#d9e2ff",
+                        "secondary": "#3d5d9e",
+                        "on-error-container": "#93000a",
+                        "on-secondary-fixed": "#001944",
+                        "error": "#ba1a1a",
+                        "surface-container-low": "#f4f3f8",
+                        "primary-container": "#062b63",
+                        "secondary-fixed-dim": "#afc6ff"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    spacing: {
+                        "container-padding-mobile": "16px",
+                        "container-padding-desktop": "32px",
+                        "unit": "4px",
+                        "stack-md": "16px",
+                        "stack-lg": "24px",
+                        "card-padding": "20px",
+                        "stack-sm": "8px",
+                        "gutter": "24px"
+                    },
+                    fontFamily: {
+                        "display-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"]
+                    },
+                    fontSize: {
+                        "display-lg": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "body-sm": ["13px", { "lineHeight": "18px", "fontWeight": "400" }],
+                        "headline-sm": ["16px", { "lineHeight": "24px", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "label-sm": ["11px", { "lineHeight": "14px", "fontWeight": "500" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom scrollbar for timeline */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f0f6;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #c4c6d1;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background antialiased flex h-screen overflow-hidden">
+<!-- Sidebar -->
+<aside class="w-[260px] h-screen fixed left-0 top-0 bg-primary dark:bg-primary-container text-on-primary dark:text-on-primary-container flex flex-col py-6 border-r border-outline-variant dark:border-outline shadow-sm z-20 flex-shrink-0 transition-all duration-300 md:translate-x-0 -translate-x-full" id="sidebar">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-surface-container-lowest rounded flex items-center justify-center font-bold text-primary text-xl relative overflow-hidden">
+<img alt="KAI Logo" class="w-full h-full object-cover" data-alt="Corporate abstract minimal logo icon blue and orange on white background, sharp geometric vectors, flat design, modern ui aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0gs1cf8RNLJT4rls7_HH_t3YnrTyzgOzPiPSluJQsLaXnutmQ9tspioJTDDmciU-J0ms_ZFXoLSbGR6bNR79szmMjioeeGjiesAARMk8hvtjvoxuc_3g1hAI5U2pWQsa84SBkbbMnf7Mkg3mm80l9VyIgIEavDE68WeCXfgRuh5-35hOxRwTmJkcdPFlpjD8lG5trqvUxiamC75RRiBLdHixEHLjztCknip-a4-IOzlQQAiiDiz9d"/>
+</div>
+<div>
+<h1 class="font-headline-sm text-headline-sm font-bold text-on-primary">e-ARSIP</h1>
+<h2 class="font-headline-sm text-headline-sm font-bold text-on-primary">KAI DIVRE III</h2>
+<p class="font-label-sm text-label-sm opacity-70 mt-0.5">Web Pengarsipan Digital</p>
+</div>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto custom-scrollbar px-3 space-y-1">
+<div class="px-3 mb-2 mt-4">
+<span class="font-label-sm text-label-sm text-on-primary opacity-50 uppercase tracking-wider">Menu Administrasi</span>
+</div>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-secondary-container text-on-secondary-container border-l-4 border-secondary font-bold scale-95 active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-primary opacity-70 hover:opacity-100 hover:bg-white/10 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">group</span>
+<span class="font-label-md text-label-md">Pengelolaan Pengguna</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-primary opacity-70 hover:opacity-100 hover:bg-white/10 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">key</span>
+<span class="font-label-md text-label-md">Hak Akses</span>
+</a>
+<div class="px-3 mb-2 mt-6">
+<span class="font-label-sm text-label-sm text-on-primary opacity-50 uppercase tracking-wider">Master Data</span>
+</div>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-primary opacity-70 hover:opacity-100 hover:bg-white/10 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">domain</span>
+<span class="font-label-md text-label-md">Unit Kerja</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-primary opacity-70 hover:opacity-100 hover:bg-white/10 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">room</span>
+<span class="font-label-md text-label-md">Ruangan</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-primary opacity-70 hover:opacity-100 hover:bg-white/10 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">inventory_2</span>
+<span class="font-label-md text-label-md">Lemari</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-primary opacity-70 hover:opacity-100 hover:bg-white/10 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">shelves</span>
+<span class="font-label-md text-label-md">Rak</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-primary opacity-70 hover:opacity-100 hover:bg-white/10 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">description</span>
+<span class="font-label-md text-label-md">Jenis Surat</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-primary opacity-70 hover:opacity-100 hover:bg-white/10 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">topic</span>
+<span class="font-label-md text-label-md">Klasifikasi Arsip</span>
+</a>
+<div class="px-3 mb-2 mt-6">
+<span class="font-label-sm text-label-sm text-on-primary opacity-50 uppercase tracking-wider">Monitoring &amp; Sistem</span>
+</div>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-primary opacity-70 hover:opacity-100 hover:bg-white/10 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">settings_suggest</span>
+<span class="font-label-md text-label-md">Monitoring Sistem</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-primary opacity-70 hover:opacity-100 hover:bg-white/10 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">history</span>
+<span class="font-label-md text-label-md">Log Aktivitas</span>
+</a>
+</div>
+<div class="px-3 mt-auto pt-4 border-t border-white/10">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-primary opacity-70 hover:opacity-100 hover:bg-white/10 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+<span class="font-label-md text-label-md">Logout</span>
+</a>
+<div class="mt-4 px-3 flex flex-col gap-1 text-on-primary opacity-50 font-label-sm text-label-sm">
+<p>e-ARSIP KAI Divre III</p>
+<p>© 2025 All Rights Reserved</p>
+</div>
+</div>
+</aside>
+<!-- Main Content Wrapper -->
+<div class="flex-1 flex flex-col ml-[260px] w-[calc(100%-260px)] h-screen">
+<!-- Top App Bar -->
+<header class="h-16 flex justify-between items-center px-container-desktop w-full bg-surface dark:bg-surface-container-high border-b border-outline-variant dark:border-outline z-10 flex-shrink-0">
+<div class="flex items-center gap-4">
+<button class="md:hidden p-2 text-on-surface-variant hover:bg-surface-variant rounded-full transition-colors">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="hidden md:flex flex-col">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">e-ARSIP KAI DIVRE III</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Web Pengarsipan Digital - Kantor KAI Divre III</span>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<!-- Notifications -->
+<button class="relative p-2 text-on-surface-variant hover:bg-surface-variant dark:hover:bg-inverse-surface rounded-full transition-all cursor-pointer">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-4 h-4 bg-error text-on-error rounded-full text-[10px] font-bold flex items-center justify-center border border-surface">3</span>
+</button>
+<!-- Profile -->
+<div class="flex items-center gap-3 cursor-pointer p-1 pr-3 rounded-full hover:bg-surface-variant transition-colors">
+<div class="w-10 h-10 rounded-full bg-primary-fixed text-on-primary-fixed flex items-center justify-center font-bold text-lg overflow-hidden">
+<img alt="Saputra Andreansyah" class="w-full h-full object-cover" data-alt="Professional corporate headshot of an administrative male in a minimalist bright office environment, modern soft natural lighting, shallow depth of field." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXe-XUdqdX6LsOIcs03fNQVNgZyurQTT52a4QUfpLEbYFkX-HPqiMxWLoXnEgDhkzzOvve0alu4EpNl9wmXK3qamuL_26DnddM-x_C6SaOQj2wXgWdKlJkxnrFIkjrHJJ5J7f12A09pHsOnWgejDjL_g-r1QesxHxbcg-fkPu-kcTjeJ-m7qXOHyRP9FC8YcIU5yersdNh9m2GVhz-yFq2fnMZwbxyNbuhl8AiUvaEdiys8WHqmSF9"/>
+</div>
+<div class="hidden md:flex flex-col">
+<span class="font-label-md text-label-md text-primary font-bold leading-tight">Saputra Andreansyah</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant leading-tight">Administrator (role_id = 1)</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant ml-1 text-sm">expand_more</span>
+</div>
+</div>
+</header>
+<!-- Scrollable Content Canvas -->
+<main class="flex-1 overflow-y-auto p-container-desktop bg-background pb-20">
+<!-- Welcome Banner -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center bg-surface-container-lowest rounded-xl p-6 border border-outline-variant shadow-[0_1px_3px_0_rgba(0,0,0,0.1)] mb-6">
+<div>
+<h2 class="font-headline-md text-headline-md text-primary flex items-center gap-2 mb-1">
+                        Selamat datang, Saputra Andreansyah 
+                        <span class="material-symbols-outlined icon-fill text-[#F59E0B] text-xl">verified_user</span>
+</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Anda login sebagai Administrator (role_id = 1). Kelola sistem dan pastikan pengarsipan berjalan optimal.</p>
+</div>
+<div class="mt-4 md:mt-0 flex items-center gap-2 text-on-surface-variant bg-surface px-4 py-2 rounded-lg border border-outline-variant">
+<span class="material-symbols-outlined text-lg">calendar_month</span>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm font-semibold">Sabtu, 10 Mei 2025</span>
+<span class="font-label-sm text-label-sm">09:30 WIB</span>
+</div>
+</div>
+</div>
+<!-- Stats Row -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+<!-- Stat Card 1 -->
+<div class="bg-surface-container-lowest rounded-xl p-5 border border-outline-variant shadow-[0_1px_3px_0_rgba(0,0,0,0.1)] flex flex-col justify-between hover:shadow-md transition-shadow relative overflow-hidden group">
+<div class="flex justify-between items-start mb-4">
+<div class="w-12 h-12 rounded-lg bg-primary-fixed/30 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[28px]">group</span>
+</div>
+<span class="font-label-sm text-label-sm text-primary font-semibold tracking-wider">TOTAL PENGGUNA</span>
+</div>
+<div>
+<h3 class="font-display-lg text-display-lg text-on-surface mb-1">48</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-4">Pengguna</p>
+<a class="font-label-sm text-label-sm text-secondary hover:text-primary flex items-center gap-1 group-hover:gap-2 transition-all" href="#">
+                            Lihat Detail <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Stat Card 2 -->
+<div class="bg-surface-container-lowest rounded-xl p-5 border border-outline-variant shadow-[0_1px_3px_0_rgba(0,0,0,0.1)] flex flex-col justify-between hover:shadow-md transition-shadow relative overflow-hidden group">
+<div class="flex justify-between items-start mb-4">
+<div class="w-12 h-12 rounded-lg bg-[#E0F2FE]/50 flex items-center justify-center text-[#0284C7]">
+<span class="material-symbols-outlined text-[28px]">how_to_reg</span>
+</div>
+<span class="font-label-sm text-label-sm text-[#0284C7] font-semibold tracking-wider">PENGGUNA AKTIF</span>
+</div>
+<div>
+<h3 class="font-display-lg text-display-lg text-on-surface mb-1">42</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-4">Pengguna</p>
+<a class="font-label-sm text-label-sm text-secondary hover:text-primary flex items-center gap-1 group-hover:gap-2 transition-all" href="#">
+                            Lihat Detail <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Stat Card 3 -->
+<div class="bg-surface-container-lowest rounded-xl p-5 border border-outline-variant shadow-[0_1px_3px_0_rgba(0,0,0,0.1)] flex flex-col justify-between hover:shadow-md transition-shadow relative overflow-hidden group">
+<div class="flex justify-between items-start mb-4">
+<div class="w-12 h-12 rounded-lg bg-[#FFEDD5]/50 flex items-center justify-center text-[#EA580C]">
+<span class="material-symbols-outlined text-[28px]">person_off</span>
+</div>
+<span class="font-label-sm text-label-sm text-[#EA580C] font-semibold tracking-wider">PENGGUNA NONAKTIF</span>
+</div>
+<div>
+<h3 class="font-display-lg text-display-lg text-on-surface mb-1">6</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-4">Pengguna</p>
+<a class="font-label-sm text-label-sm text-secondary hover:text-primary flex items-center gap-1 group-hover:gap-2 transition-all" href="#">
+                            Lihat Detail <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Stat Card 4 -->
+<div class="bg-surface-container-lowest rounded-xl p-5 border border-outline-variant shadow-[0_1px_3px_0_rgba(0,0,0,0.1)] flex flex-col justify-between hover:shadow-md transition-shadow relative overflow-hidden group">
+<div class="flex justify-between items-start mb-4">
+<div class="w-12 h-12 rounded-lg bg-[#F3E8FF]/50 flex items-center justify-center text-[#7E22CE]">
+<span class="material-symbols-outlined text-[28px]">assignment</span>
+</div>
+<span class="font-label-sm text-label-sm text-[#7E22CE] font-semibold tracking-wider uppercase">Log Aktivitas Hari Ini</span>
+</div>
+<div>
+<h3 class="font-display-lg text-display-lg text-on-surface mb-1">126</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-4">Aktivitas</p>
+<a class="font-label-sm text-label-sm text-secondary hover:text-primary flex items-center gap-1 group-hover:gap-2 transition-all" href="#">
+                            Lihat Detail <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+<!-- Quick Access -->
+<div class="mb-6">
+<h3 class="font-label-md text-label-md text-primary mb-3 uppercase tracking-wider pl-1">Akses Cepat Admin</h3>
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-[0_1px_3px_0_rgba(0,0,0,0.1)] p-4 flex overflow-x-auto custom-scrollbar gap-2">
+<button class="flex flex-col items-center justify-center min-w-[90px] p-3 rounded-lg hover:bg-surface-container transition-colors group">
+<div class="w-10 h-10 rounded-full bg-primary-fixed/20 text-primary flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">manage_accounts</span>
+</div>
+<span class="font-label-sm text-label-sm text-center text-on-surface-variant">Kelola Pengguna</span>
+</button>
+<button class="flex flex-col items-center justify-center min-w-[90px] p-3 rounded-lg hover:bg-surface-container transition-colors group">
+<div class="w-10 h-10 rounded-full bg-primary-fixed/20 text-primary flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">person_add</span>
+</div>
+<span class="font-label-sm text-label-sm text-center text-on-surface-variant">Tambah Pengguna</span>
+</button>
+<button class="flex flex-col items-center justify-center min-w-[90px] p-3 rounded-lg hover:bg-surface-container transition-colors group">
+<div class="w-10 h-10 rounded-full bg-primary-fixed/20 text-primary flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">admin_panel_settings</span>
+</div>
+<span class="font-label-sm text-label-sm text-center text-on-surface-variant">Atur Hak Akses</span>
+</button>
+<button class="flex flex-col items-center justify-center min-w-[90px] p-3 rounded-lg hover:bg-surface-container transition-colors group">
+<div class="w-10 h-10 rounded-full bg-[#D1FAE5]/50 text-[#059669] flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">domain</span>
+</div>
+<span class="font-label-sm text-label-sm text-center text-on-surface-variant">Unit Kerja</span>
+</button>
+<button class="flex flex-col items-center justify-center min-w-[90px] p-3 rounded-lg hover:bg-surface-container transition-colors group">
+<div class="w-10 h-10 rounded-full bg-[#FFEDD5]/50 text-[#EA580C] flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">meeting_room</span>
+</div>
+<span class="font-label-sm text-label-sm text-center text-on-surface-variant">Ruangan</span>
+</button>
+<button class="flex flex-col items-center justify-center min-w-[90px] p-3 rounded-lg hover:bg-surface-container transition-colors group">
+<div class="w-10 h-10 rounded-full bg-[#F3E8FF]/50 text-[#7E22CE] flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">inventory_2</span>
+</div>
+<span class="font-label-sm text-label-sm text-center text-on-surface-variant">Lemari</span>
+</button>
+<button class="flex flex-col items-center justify-center min-w-[90px] p-3 rounded-lg hover:bg-surface-container transition-colors group">
+<div class="w-10 h-10 rounded-full bg-[#E0F2FE]/50 text-[#0284C7] flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">shelves</span>
+</div>
+<span class="font-label-sm text-label-sm text-center text-on-surface-variant">Rak</span>
+</button>
+<button class="flex flex-col items-center justify-center min-w-[90px] p-3 rounded-lg hover:bg-surface-container transition-colors group">
+<div class="w-10 h-10 rounded-full bg-[#FFE4E6]/50 text-[#E11D48] flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">description</span>
+</div>
+<span class="font-label-sm text-label-sm text-center text-on-surface-variant">Jenis Surat</span>
+</button>
+<button class="flex flex-col items-center justify-center min-w-[90px] p-3 rounded-lg hover:bg-surface-container transition-colors group">
+<div class="w-10 h-10 rounded-full bg-[#DCFCE7]/50 text-[#16A34A] flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">topic</span>
+</div>
+<span class="font-label-sm text-label-sm text-center text-on-surface-variant">Klasifikasi Arsip</span>
+</button>
+<button class="flex flex-col items-center justify-center min-w-[90px] p-3 rounded-lg hover:bg-surface-container transition-colors group">
+<div class="w-10 h-10 rounded-full bg-primary-fixed/20 text-primary flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">monitor_heart</span>
+</div>
+<span class="font-label-sm text-label-sm text-center text-on-surface-variant">Monitoring Sistem</span>
+</button>
+<button class="flex flex-col items-center justify-center min-w-[90px] p-3 rounded-lg hover:bg-surface-container transition-colors group">
+<div class="w-10 h-10 rounded-full bg-surface-variant text-on-surface-variant flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">list_alt</span>
+</div>
+<span class="font-label-sm text-label-sm text-center text-on-surface-variant">Log Aktivitas</span>
+</button>
+</div>
+</div>
+<!-- Two Column Section 1 -->
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-6">
+<!-- Users Table -->
+<div class="xl:col-span-2 bg-surface-container-lowest rounded-xl border border-outline-variant shadow-[0_1px_3px_0_rgba(0,0,0,0.1)] flex flex-col h-[400px]">
+<div class="p-4 border-b border-outline-variant flex justify-between items-center bg-surface/50 rounded-t-xl">
+<h3 class="font-label-md text-label-md text-primary uppercase tracking-wider">Pengguna Terbaru</h3>
+<a class="font-label-sm text-label-sm text-secondary hover:text-primary" href="#">Lihat Semua</a>
+</div>
+<div class="flex-1 overflow-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider">
+<th class="py-3 px-4 w-12 text-center">No</th>
+<th class="py-3 px-4">Nama</th>
+<th class="py-3 px-4">Username</th>
+<th class="py-3 px-4">Role</th>
+<th class="py-3 px-4">Unit Kerja</th>
+<th class="py-3 px-4">Status</th>
+<th class="py-3 px-4">Tanggal Dibuat</th>
+</tr>
+</thead>
+<tbody class="text-body-sm font-body-sm text-on-surface divide-y divide-outline-variant">
+<tr class="hover:bg-surface-variant/30 transition-colors">
+<td class="py-3 px-4 text-center text-on-surface-variant">1</td>
+<td class="py-3 px-4 font-medium">Rina Malinda</td>
+<td class="py-3 px-4 text-on-surface-variant">rmalinda</td>
+<td class="py-3 px-4">Petugas</td>
+<td class="py-3 px-4">SDM &amp; Umum</td>
+<td class="py-3 px-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-[#DCFCE7] text-[#166534]">Aktif</span>
+</td>
+<td class="py-3 px-4 text-on-surface-variant">09 Mei 2025 08:45</td>
+</tr>
+<tr class="hover:bg-surface-variant/30 transition-colors">
+<td class="py-3 px-4 text-center text-on-surface-variant">2</td>
+<td class="py-3 px-4 font-medium">Budi Santoso</td>
+<td class="py-3 px-4 text-on-surface-variant">bsantoso</td>
+<td class="py-3 px-4">Petugas</td>
+<td class="py-3 px-4">Operasi</td>
+<td class="py-3 px-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-[#DCFCE7] text-[#166534]">Aktif</span>
+</td>
+<td class="py-3 px-4 text-on-surface-variant">09 Mei 2025 07:32</td>
+</tr>
+<tr class="hover:bg-surface-variant/30 transition-colors">
+<td class="py-3 px-4 text-center text-on-surface-variant">3</td>
+<td class="py-3 px-4 font-medium">Dewi Lestari</td>
+<td class="py-3 px-4 text-on-surface-variant">dlestari</td>
+<td class="py-3 px-4">Visitor</td>
+<td class="py-3 px-4">Keuangan</td>
+<td class="py-3 px-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-[#DCFCE7] text-[#166534]">Aktif</span>
+</td>
+<td class="py-3 px-4 text-on-surface-variant">08 Mei 2025 15:20</td>
+</tr>
+<tr class="hover:bg-surface-variant/30 transition-colors">
+<td class="py-3 px-4 text-center text-on-surface-variant">4</td>
+<td class="py-3 px-4 font-medium">Andi Kurniawan</td>
+<td class="py-3 px-4 text-on-surface-variant">akurniawan</td>
+<td class="py-3 px-4">Petugas</td>
+<td class="py-3 px-4">Sarana</td>
+<td class="py-3 px-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-[#DCFCE7] text-[#166534]">Aktif</span>
+</td>
+<td class="py-3 px-4 text-on-surface-variant">08 Mei 2025 10:12</td>
+</tr>
+<tr class="hover:bg-surface-variant/30 transition-colors">
+<td class="py-3 px-4 text-center text-on-surface-variant">5</td>
+<td class="py-3 px-4 font-medium">Putri Aulia</td>
+<td class="py-3 px-4 text-on-surface-variant">paulia</td>
+<td class="py-3 px-4">Pimpinan</td>
+<td class="py-3 px-4">Pimpinan</td>
+<td class="py-3 px-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-[#DCFCE7] text-[#166534]">Aktif</span>
+</td>
+<td class="py-3 px-4 text-on-surface-variant">07 Mei 2025 16:05</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Activity Log -->
+<div class="xl:col-span-1 bg-surface-container-lowest rounded-xl border border-outline-variant shadow-[0_1px_3px_0_rgba(0,0,0,0.1)] flex flex-col h-[400px]">
+<div class="p-4 border-b border-outline-variant flex justify-between items-center bg-surface/50 rounded-t-xl">
+<h3 class="font-label-md text-label-md text-primary uppercase tracking-wider">Log Aktivitas Terbaru</h3>
+<a class="font-label-sm text-label-sm text-secondary hover:text-primary" href="#">Lihat Semua</a>
+</div>
+<div class="flex-1 overflow-y-auto p-4 custom-scrollbar">
+<div class="relative space-y-6 before:absolute before:inset-0 before:ml-4 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-outline-variant/30">
+<!-- Item 1 -->
+<div class="relative flex items-start gap-4">
+<div class="relative z-10 w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white flex-shrink-0 outline outline-4 outline-surface-container-lowest">
+<span class="material-symbols-outlined text-[16px]">person_add</span>
+</div>
+<div class="flex-1 pb-1">
+<p class="font-body-sm text-body-sm text-on-surface leading-tight">Administrator menambahkan pengguna baru "<span class="font-semibold">Rina Malinda</span>"</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1">oleh Saputra Andreansyah</p>
+</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant whitespace-nowrap text-right">
+                                    Waktu<br/>09:15 WIB
+                                </div>
+</div>
+<!-- Item 2 -->
+<div class="relative flex items-start gap-4">
+<div class="relative z-10 w-8 h-8 rounded-full bg-[#10B981] flex items-center justify-center text-white flex-shrink-0 outline outline-4 outline-surface-container-lowest">
+<span class="material-symbols-outlined text-[16px]">shield_person</span>
+</div>
+<div class="flex-1 pb-1">
+<p class="font-body-sm text-body-sm text-on-surface leading-tight">Perubahan hak akses pengguna "<span class="font-semibold">Budi Santoso</span>"</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1">oleh Saputra Andreansyah</p>
+</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant whitespace-nowrap text-right pt-1">
+                                    08:47 WIB
+                                </div>
+</div>
+<!-- Item 3 -->
+<div class="relative flex items-start gap-4">
+<div class="relative z-10 w-8 h-8 rounded-full bg-[#F59E0B] flex items-center justify-center text-white flex-shrink-0 outline outline-4 outline-surface-container-lowest">
+<span class="material-symbols-outlined text-[16px]">domain</span>
+</div>
+<div class="flex-1 pb-1">
+<p class="font-body-sm text-body-sm text-on-surface leading-tight">Data master unit "<span class="font-semibold">Unit Operasi</span>" diperbarui</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1">oleh Saputra Andreansyah</p>
+</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant whitespace-nowrap text-right pt-1">
+                                    08:10 WIB
+                                </div>
+</div>
+<!-- Item 4 -->
+<div class="relative flex items-start gap-4">
+<div class="relative z-10 w-8 h-8 rounded-full bg-[#8B5CF6] flex items-center justify-center text-white flex-shrink-0 outline outline-4 outline-surface-container-lowest">
+<span class="material-symbols-outlined text-[16px]">note_add</span>
+</div>
+<div class="flex-1 pb-1">
+<p class="font-body-sm text-body-sm text-on-surface leading-tight">Data jenis surat "<span class="font-semibold">Surat Perintah Kerja</span>" ditambahkan</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1">oleh Saputra Andreansyah</p>
+</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant whitespace-nowrap text-right pt-1">
+                                    07:55 WIB
+                                </div>
+</div>
+<!-- Item 5 -->
+<div class="relative flex items-start gap-4">
+<div class="relative z-10 w-8 h-8 rounded-full bg-[#64748B] flex items-center justify-center text-white flex-shrink-0 outline outline-4 outline-surface-container-lowest">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+</div>
+<div class="flex-1 pb-1">
+<p class="font-body-sm text-body-sm text-on-surface leading-tight">Melihat log aktivitas sistem</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1">oleh Saputra Andreansyah</p>
+</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant whitespace-nowrap text-right pt-1">
+                                    07:20 WIB
+                                </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Two Column Section 2 -->
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+<!-- Master Data Summary -->
+<div>
+<h3 class="font-label-md text-label-md text-primary mb-3 uppercase tracking-wider pl-1">Ringkasan Master Data</h3>
+<div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-[0_1px_3px_0_rgba(0,0,0,0.1)] p-4 flex gap-3 items-center hover:bg-surface-variant/20 transition-colors">
+<div class="w-10 h-10 rounded bg-[#E0F2FE]/50 text-[#0284C7] flex items-center justify-center">
+<span class="material-symbols-outlined">domain</span>
+</div>
+<div>
+<h4 class="font-label-sm text-label-sm text-[#0284C7] uppercase tracking-wide">Unit Kerja</h4>
+<p class="font-headline-md text-headline-md text-on-surface">12</p>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Unit</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-[0_1px_3px_0_rgba(0,0,0,0.1)] p-4 flex gap-3 items-center hover:bg-surface-variant/20 transition-colors">
+<div class="w-10 h-10 rounded bg-[#FFEDD5]/50 text-[#EA580C] flex items-center justify-center">
+<span class="material-symbols-outlined">meeting_room</span>
+</div>
+<div>
+<h4 class="font-label-sm text-label-sm text-[#EA580C] uppercase tracking-wide">Ruangan</h4>
+<p class="font-headline-md text-headline-md text-on-surface">45</p>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Ruangan</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-[0_1px_3px_0_rgba(0,0,0,0.1)] p-4 flex gap-3 items-center hover:bg-surface-variant/20 transition-colors">
+<div class="w-10 h-10 rounded bg-[#F3E8FF]/50 text-[#7E22CE] flex items-center justify-center">
+<span class="material-symbols-outlined">inventory_2</span>
+</div>
+<div>
+<h4 class="font-label-sm text-label-sm text-[#7E22CE] uppercase tracking-wide">Lemari</h4>
+<p class="font-headline-md text-headline-md text-on-surface">38</p>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Lemari</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-[0_1px_3px_0_rgba(0,0,0,0.1)] p-4 flex gap-3 items-center hover:bg-surface-variant/20 transition-colors">
+<div class="w-10 h-10 rounded bg-[#E0F2FE]/50 text-[#0284C7] flex items-center justify-center">
+<span class="material-symbols-outlined">shelves</span>
+</div>
+<div>
+<h4 class="font-label-sm text-label-sm text-[#0284C7] uppercase tracking-wide">Rak</h4>
+<p class="font-headline-md text-headline-md text-on-surface">112</p>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Rak</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-[0_1px_3px_0_rgba(0,0,0,0.1)] p-4 flex gap-3 items-center hover:bg-surface-variant/20 transition-colors">
+<div class="w-10 h-10 rounded bg-[#FFE4E6]/50 text-[#E11D48] flex items-center justify-center">
+<span class="material-symbols-outlined">description</span>
+</div>
+<div>
+<h4 class="font-label-sm text-label-sm text-[#E11D48] uppercase tracking-wide">Jenis Surat</h4>
+<p class="font-headline-md text-headline-md text-on-surface">28</p>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Jenis</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-[0_1px_3px_0_rgba(0,0,0,0.1)] p-4 flex gap-3 items-center hover:bg-surface-variant/20 transition-colors">
+<div class="w-10 h-10 rounded bg-[#DCFCE7]/50 text-[#16A34A] flex items-center justify-center">
+<span class="material-symbols-outlined">topic</span>
+</div>
+<div>
+<h4 class="font-label-sm text-label-sm text-[#16A34A] uppercase tracking-wide">Klasifikasi Arsip</h4>
+<p class="font-headline-md text-headline-md text-on-surface">15</p>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Klasifikasi</span>
+</div>
+</div>
+</div>
+</div>
+<!-- System Monitoring -->
+<div>
+<h3 class="font-label-md text-label-md text-primary mb-3 uppercase tracking-wider pl-1">Monitoring Sistem</h3>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 h-[calc(100%-32px)]">
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-[0_1px_3px_0_rgba(0,0,0,0.1)] p-4 flex flex-col items-center justify-center text-center">
+<div class="w-12 h-12 rounded-full border-2 border-[#10B981] flex items-center justify-center mb-3">
+<span class="material-symbols-outlined text-[#10B981]">check_circle</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant mb-1">Status Sistem</span>
+<span class="font-headline-sm text-headline-sm text-[#10B981] font-bold">Normal</span>
+<span class="font-label-sm text-[10px] text-on-surface-variant mt-1">Sistem berjalan dengan baik</span>
+</div>
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-[0_1px_3px_0_rgba(0,0,0,0.1)] p-4 flex flex-col items-center justify-center text-center">
+<span class="material-symbols-outlined text-[32px] text-primary mb-3">database</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant mb-1">Backup Terakhir</span>
+<span class="font-headline-sm text-body-sm font-bold text-on-surface">09 Mei 2025</span>
+<span class="font-label-sm text-[10px] text-on-surface-variant mt-0.5">08:30 WIB</span>
+<span class="font-label-sm text-[10px] text-[#10B981] mt-1 font-medium">Berhasil</span>
+</div>
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-[0_1px_3px_0_rgba(0,0,0,0.1)] p-4 flex flex-col items-center justify-center text-center relative overflow-hidden">
+<!-- SVG Pie Chart Placeholder -->
+<svg class="w-12 h-12 mb-3 -rotate-90" viewbox="0 0 36 36">
+<path class="text-surface-variant" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="4"></path>
+<path class="text-[#8B5CF6]" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="62, 100" stroke-width="4"></path>
+</svg>
+<span class="font-label-sm text-label-sm text-on-surface-variant mb-1">Penggunaan Penyimpanan</span>
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold">62%</span>
+<span class="font-label-sm text-[10px] text-on-surface-variant mt-1">125,6 GB / 200 GB</span>
+</div>
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-[0_1px_3px_0_rgba(0,0,0,0.1)] p-4 flex flex-col items-center justify-center text-center relative overflow-hidden">
+<span class="material-symbols-outlined text-[32px] text-[#F97316] mb-3">show_chart</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant mb-1">Aktivitas Sistem</span>
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold">126</span>
+<span class="font-label-sm text-[10px] text-on-surface-variant mt-1">Aktivitas hari ini</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

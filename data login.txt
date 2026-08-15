@@ -1,0 +1,7 @@
+-login admin ,
+ username = admin  
+pass=Admin12345
+
+-login petugas
+username = petugas
+pass = Petugas12345
