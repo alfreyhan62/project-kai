@@ -33,4 +33,6 @@ if ($storageRoot === false || $path === false || strpos($path, $storageRoot . DI
 header('Content-Type: ' . $file['mime_type']);
 header('Content-Disposition: inline; filename="' . rawurlencode($file['nama_file']) . '"');
 header('X-Content-Type-Options: nosniff');
+header('Content-Length: ' . (string) filesize($path));
+if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'HEAD') exit;
 readfile($path);

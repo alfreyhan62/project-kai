@@ -4,15 +4,15 @@ declare(strict_types=1);
 function archiveScopeCondition(): string
 {
     $roleId = currentRoleId();
-    if ($roleId === 1) return '1=1';
-    if ($roleId === 2 || $roleId === 4) return 'a.unit_id = :scope_unit_id';
+    if ($roleId === 1 || $roleId === 4) return '1=1';
+    if ($roleId === 2) return 'a.unit_id = :scope_unit_id';
     return '1=0';
 }
 
 function archiveScopeParams(): array
 {
     $roleId = currentRoleId();
-    if ($roleId === 2 || $roleId === 4) return ['scope_unit_id' => (int) ($_SESSION['unit_id'] ?? 0)];
+    if ($roleId === 2) return ['scope_unit_id' => (int) ($_SESSION['unit_id'] ?? 0)];
     return [];
 }
 
