@@ -23,8 +23,8 @@ if ($roleId === 1) {
     require __DIR__ . '/includes/dashboard-admin-view.php';
     exit;
 }
-if ($roleId === 2) { require __DIR__ . '/dashboard-petugas.php'; exit; }
-if ($roleId === 4) { require __DIR__ . '/dashboard-pimpinan.php'; exit; }
-if (strtolower((string) ($_SESSION['role_name'] ?? '')) === 'visitor') { require __DIR__ . '/dashboard-visitor.php'; exit; }
+if ($roleId === 2) { header('Location: pages/petugas/dashboard.php'); exit; }
+if ($roleId === 4) { header('Location: pages/pimpinan/dashboard.php'); exit; }
+if (strtolower((string) ($_SESSION['role_name'] ?? '')) === 'visitor') { header('Location: pages/visitor/dashboard.php'); exit; }
 http_response_code(403);
 exit('Anda tidak memiliki hak akses ke halaman ini.');
