@@ -1,1 +1,8 @@
+Options -Indexes
+
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ "/new kai/404.php" [R=302,L]
+
 ErrorDocument 404 /new%20kai/404.php
