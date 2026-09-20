@@ -31,10 +31,53 @@ function currentRoleId(): int
     return (int) ($_SESSION['role_id'] ?? 0);
 }
 
+function profileInitial(string $name): string
+{
+    $name = $name ?: 'U';
+    return function_exists('mb_strtoupper') ? mb_strtoupper(mb_substr($name, 0, 1)) : strtoupper(substr($name, 0, 1));
+}
+
+function profileAvatar(string $assetBase, string $name): string
+{
+    global $pdo;
+    $initial = profileInitial($name);
+    if (!isset($pdo) || !isLoggedIn()) return e($initial);
+    $statement = $pdo->prepare('SELECT updated_at FROM profile_photos WHERE user_id = :user_id');
+    $statement->execute(['user_id' => (int) $_SESSION['user_id']]);
+    $updatedAt = $statement->fetchColumn();
+    if (!$updatedAt) return e($initial);
+    $separator = str_contains($assetBase, '?') ? '&' : '?';
+    $src = rtrim($assetBase, '/') . '/api/profile-photo.php' . $separator . 't=' . rawurlencode((string) strtotime((string) $updatedAt));
+    return '<img src="' . e($src) . '" alt="Foto profil ' . e($name) . '">';
+}
+
+function passwordChangeUrl(): string
+{
+    $script = str_replace('\\', '/', (string) ($_SERVER['SCRIPT_NAME'] ?? ''));
+    $pagesPosition = strpos($script, '/pages/');
+    return ($pagesPosition === false ? rtrim(dirname($script), '/') : substr($script, 0, $pagesPosition)) . '/pages/profile/ubah-password.php';
+}
+
+function passwordIsExpired(): bool
+{
+    global $pdo;
+    if (!isset($pdo) || !isLoggedIn()) return false;
+    $statement = $pdo->prepare('SELECT password_changed_at FROM users WHERE user_id = :user_id AND role_id = :role_id AND is_active = 1');
+    $statement->execute(['user_id' => (int) $_SESSION['user_id'], 'role_id' => (int) $_SESSION['role_id']]);
+    $changedAt = $statement->fetchColumn();
+    return !$changedAt || strtotime((string) $changedAt) <= strtotime('-3 months');
+}
+
 function requireLogin(): void
 {
     if (!isLoggedIn()) {
-        header('Location: login.php');
+        $depth = substr_count(trim(str_replace('\\', '/', dirname((string) ($_SERVER['SCRIPT_NAME'] ?? ''))), '/'), '/');
+        header('Location: ' . str_repeat('../', $depth) . 'login.php');
+        exit;
+    }
+    $script = str_replace('\\', '/', (string) ($_SERVER['SCRIPT_NAME'] ?? ''));
+    if (!str_ends_with($script, '/pages/profile/ubah-password.php') && passwordIsExpired()) {
+        header('Location: ' . passwordChangeUrl());
         exit;
     }
 }
@@ -81,20 +124,5 @@ function verifyCsrfToken(): bool
 
 function dashboardUrl(string $roleName): string
 {
-    return 'dashboard.php?role=' . rawurlencode(strtolower($roleName));
-}
-
-function logActivity(PDO $pdo, int $userId, string $activity): void
-{
-    try {
-        $columns = $pdo->query("SHOW COLUMNS FROM log_aktivitas")->fetchAll(PDO::FETCH_COLUMN);
-        $activityColumn = in_array('aktivitas', $columns, true) ? 'aktivitas' : (in_array('activity', $columns, true) ? 'activity' : null);
-        if ($activityColumn === null || !in_array('user_id', $columns, true)) {
-            return;
-        }
-        $statement = $pdo->prepare("INSERT INTO log_aktivitas (user_id, {$activityColumn}) VALUES (:user_id, :activity)");
-        $statement->execute(['user_id' => $userId, 'activity' => $activity]);
-    } catch (PDOException $exception) {
-        error_log('Gagal mencatat log aktivitas.');
-    }
+    return strtolower($roleName) === 'admin' ? 'pages/admin/dashboard.php' : 'dashboard.php';
 }

@@ -1,0 +1,153 @@
+<!DOCTYPE html><html lang="id" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>404 - Halaman Tidak Ditemukan | Sistem Arsip Surat &amp; SPK KAI</title>
+<!-- Tailwind CSS CDN with forms and container queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Custom Configuration -->
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            kai: {
+              navy: '#0F2A58',
+              'navy-dark': '#0B1E3F',
+              'navy-light': '#1A3F96',
+              orange: '#F15A24',
+              'orange-hover': '#DD4A15',
+              blue: '#0066B3',
+              gray: '#F4F6F9',
+              slate: '#5A6A80'
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', '-apple-system', 'sans-serif']
+          },
+          boxShadow: {
+            'kai': '0 8px 24px -4px rgba(241, 90, 36, 0.28)',
+            'card': '0 12px 32px -4px rgba(15, 42, 88, 0.08), 0 4px 12px rgba(0, 0, 0, 0.04)'
+          }
+        }
+      }
+    }
+  </script>
+<!-- Google Fonts: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,700;1,800&amp;display=swap" rel="stylesheet">
+<style data-purpose="custom-typography">
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    /* Dynamic speed lines inside the 404 '0' mark matching KAI logo geometry */
+    .kai-zero-container {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .kai-zero-slash {
+      position: absolute;
+      width: 114%;
+      height: 26%;
+      background: linear-gradient(135deg, #F15A24 0%, #FF6F3D 100%);
+      transform: rotate(-30deg) skewX(-12deg);
+      border-radius: 9999px;
+      box-shadow: 0 3px 10px rgba(241, 90, 36, 0.45);
+      z-index: 10;
+    }
+
+    .kai-zero-slash-secondary {
+      position: absolute;
+      width: 114%;
+      height: 9%;
+      background: #FFFFFF;
+      transform: rotate(-30deg) skewX(-12deg) translateY(-15px);
+      z-index: 9;
+    }
+  </style>
+</head>
+<body class="bg-[#F8FAFC] text-slate-800 min-h-screen flex flex-col justify-between antialiased selection:bg-kai-orange selection:text-white" style="background: linear-gradient(135deg, rgb(248, 250, 252) 0%, rgb(239, 246, 255) 45%, rgb(226, 237, 248) 100%); min-height: 100vh;">
+<!-- BEGIN: MainHeader -->
+<header class="w-full bg-white border-b border-slate-200/90 shadow-sm sticky top-0 z-40">
+<div class="max-w-[1440px] mx-auto px-6 lg:px-12 py-3.5 flex items-center justify-between gap-4">
+<!-- Left side: KAI Logo with divider and Title -->
+<div class="flex items-center gap-3.5">
+<!-- Official KAI Text-Mark Emulation -->
+<a class="flex items-center tracking-tighter" data-purpose="kai-logo" href="#">
+<span class="text-2xl lg:text-3xl font-black text-kai-navy tracking-tight italic">K</span>
+<span class="text-2xl lg:text-3xl font-black text-kai-navy tracking-tight italic -ml-0.5">A</span>
+<div class="relative inline-flex items-center">
+<span class="text-2xl lg:text-3xl font-black text-kai-navy italic -ml-0.5 mr-0.5">I</span>
+<!-- Speed Swoosh on Logo -->
+<span class="absolute -right-1 bottom-1 w-2.5 h-1 bg-kai-orange rounded-full transform -skew-x-12"></span>
+</div>
+</a>
+<!-- App Title Divider & Full Name -->
+<div class="h-7 w-[1.5px] bg-slate-300 mx-1"></div>
+<div class="flex items-baseline gap-2">
+<span class="text-sm lg:text-base font-bold text-kai-navy tracking-tight">
+            Sistem Arsip Surat&nbsp;</span>
+<span class="text-xs text-slate-400 font-normal hidden sm:inline">|</span>
+
+</div>
+</div>
+<!-- Right side: Tagline & Department Indicator -->
+<div class="flex items-center gap-4" data-purpose="corporate-slogan">
+<div class="hidden md:flex items-center gap-2 px-3 py-1 bg-blue-50/70 border border-blue-100 rounded-full text-xs font-medium text-kai-navy">
+<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+
+</div>
+<div class="h-4 w-[1px] bg-slate-200 hidden md:block"></div>
+<p class="text-xs lg:text-sm italic font-semibold text-kai-navy tracking-wide">
+          Kereta Api untuk <span class="text-kai-orange font-extrabold not-italic">Indonesia</span>
+</p>
+</div>
+</div>
+</header>
+<!-- END: MainHeader -->
+<!-- BEGIN: MainContent (Desktop 2-Column Layout) -->
+<main class="flex-1 max-w-[1440px] w-full mx-auto px-6 lg:px-12 py-8 lg:py-12 flex flex-col justify-center">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
+<!-- Left Column (approx 45-50% width) -->
+<div class="lg:col-span-5 xl:col-span-5 flex flex-col items-start text-left"><div class="flex items-center font-black text-8xl lg:text-9xl text-kai-navy tracking-tight mb-2 select-none" data-purpose="404-number"><span class="">4</span><div class="kai-zero-container mx-1.5 lg:mx-2"><div class="kai-zero-slash-secondary"></div><div class="kai-zero-slash"></div><span class="relative z-0 text-kai-navy">0</span></div><span class="">4</span></div><h1 class="text-3xl lg:text-4xl font-extrabold text-kai-navy tracking-tight mb-3">Halaman Tidak Ditemukan</h1><p class="text-slate-600 text-base leading-relaxed max-w-lg mb-8">Maaf, halaman yang Anda cari tidak tersedia atau telah dipindahkan. Silakan kembali ke beranda atau gunakan menu navigasi untuk menemukan dokumen yang Anda tuju.</p><div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 w-full sm:w-auto mb-8" data-purpose="action-buttons"><a class="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 bg-kai-orange hover:bg-kai-orange-hover active:scale-[0.98] text-white font-bold text-sm lg:text-base rounded-xl shadow-kai transition-all duration-200 focus:ring-4 focus:ring-orange-200 focus:outline-none" href="#"><svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg><span class="">Kembali ke Beranda</span></a><a class="inline-flex items-center justify-center gap-2 px-5 py-3.5 bg-white hover:bg-slate-50 active:scale-[0.98] text-kai-navy font-semibold text-sm lg:text-base rounded-xl border border-slate-300 shadow-sm transition-all duration-200 focus:ring-4 focus:ring-slate-100 focus:outline-none" href="#"></a></div><div class="p-4 rounded-xl bg-blue-50/70 border border-blue-100 text-left w-full max-w-lg flex items-start gap-3.5"><div class="p-2 bg-blue-100/90 rounded-lg text-kai-navy flex-shrink-0 mt-0.5"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" fill-rule="evenodd"></path></svg></div><div><h2 class="text-xs font-bold text-kai-navy uppercase tracking-wider mb-0.5">Pencarian Arsip</h2><p class="text-xs text-slate-600 leading-relaxed">Pastikan nomor referensi berkas atau ID Surat Perintah Kerja (SPK) yang Anda masukkan sudah benar.</p></div></div></div>
+<!-- Right Column (approx 50-55% width): Locomotive & Officer Hero Visual -->
+<div class="lg:col-span-7 xl:col-span-7 flex justify-center items-center" data-purpose="train-illustration-container"><div class="relative w-full flex items-center justify-center"><div class="absolute -inset-4 bg-gradient-to-r from-blue-200/20 via-sky-100/30 to-orange-100/25 rounded-3xl blur-2xl -z-10 pointer-events-none"></div><div class="relative w-full overflow-hidden rounded-2xl group transition-all duration-300" ><img src="assets/images/404-kai.png" alt="Ilustrasi Kereta Api KAI - Menuju Perjalanan Selanjutnya" class="w-full h-auto object-cover rounded-2xl filter drop-shadow-md" style="max-height: 720px; aspect-ratio: 16 / 9; object-position: center center;"></div></div></div>
+</div>
+<div class="w-full max-w-full overflow-hidden mt-6 pt-2 pointer-events-none opacity-80"><svg class="w-full h-8" viewBox="0 0 1200 32" fill="none" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 24C300 24 450 12 700 12C950 12 1050 20 1200 20" stroke="#0F2A58" stroke-width="2.5" stroke-linecap="round" stroke-opacity="0.35"></path><path d="M0 28C280 28 420 16 680 16C940 16 1040 24 1200 24" stroke="#F15A24" stroke-width="2.5" stroke-linecap="round" stroke-opacity="0.65"></path></svg></div></main>
+<!-- END: MainContent -->
+<!-- BEGIN: MainFooter -->
+<footer class="w-full relative mt-8 overflow-hidden bg-white border-t border-slate-200/70" data-purpose="page-footer">
+<!-- Fluid KAI Color Dual Stripe (Navy & Orange) -->
+<div class="w-full h-2 flex">
+<div class="w-2/3 bg-kai-navy"></div>
+<div class="w-1/3 bg-kai-orange"></div>
+</div>
+<!-- Corporate Information Bar -->
+<div class="max-w-[1440px] mx-auto px-6 lg:px-12 py-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+<div class="flex items-center gap-2">
+<p class="text-xs sm:text-sm font-bold text-kai-navy">
+          PT Kereta Api Indonesia (Persero)
+        </p>
+<span class="text-slate-300 hidden sm:inline">•</span>
+<p class="text-xs text-slate-500 font-medium">
+          Melayani Sepenuh Hati
+        </p>
+</div>
+<div class="flex items-center gap-4 sm:gap-6 text-xs text-slate-500">
+<a class="hover:text-kai-navy transition-colors font-medium" href="#">Panduan Sistem</a>
+<span class="text-slate-300">•</span>
+<a class="hover:text-kai-navy transition-colors font-medium" href="#">Kebijakan Privasi</a>
+<span class="text-slate-300">•</span>
+<a class="hover:text-kai-navy transition-colors font-medium" href="#">Contact Center 121</a>
+</div>
+</div>
+</footer>
+<!-- END: MainFooter -->
+
+
+</body></html>

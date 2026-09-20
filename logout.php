@@ -5,10 +5,6 @@ require_once __DIR__ . '/config/database.php';
 require_once __DIR__ . '/includes/auth.php';
 startSession();
 
-if (isset($_SESSION['user_id'])) {
-    logActivity($pdo, (int) $_SESSION['user_id'], 'LOGOUT');
-}
-
 $_SESSION = [];
 if (ini_get('session.use_cookies')) {
     $params = session_get_cookie_params();

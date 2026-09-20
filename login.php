@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($username === '' || $password === '') {
         $error = 'Username atau password salah.';
     } else {
-        $statement = $pdo->prepare('SELECT u.user_id, u.role_id, u.unit_id, u.username, u.password_hash, u.nama_lengkap, u.is_active, r.role_name FROM users u INNER JOIN roles r ON r.role_id = u.role_id WHERE LOWER(u.username) = LOWER(:username) LIMIT 1');
+        $statement = $pdo->prepare('SELECT u.user_id, u.role_id, u.unit_id, u.username, u.password_hash, u.password_changed_at, u.nama_lengkap, u.is_active, r.role_name FROM users u INNER JOIN roles r ON r.role_id = u.role_id WHERE LOWER(u.username) = LOWER(:username) LIMIT 1');
         $statement->execute(['username' => $username]);
         $user = $statement->fetch();
 
@@ -34,7 +34,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['role_name'] = $user['role_name'];
             $_SESSION['unit_id'] = $user['unit_id'] === null ? null : (int) $user['unit_id'];
             $pdo->prepare('UPDATE users SET last_login = NOW() WHERE user_id = :user_id')->execute(['user_id' => $user['user_id']]);
-            logActivity($pdo, (int) $user['user_id'], 'LOGIN');
+            if (!$user['password_changed_at'] || strtotime((string) $user['password_changed_at']) <= strtotime('-3 months')) {
+                header('Location: pages/profile/ubah-password.php');
+                exit;
+            }
             header('Location: ' . dashboardUrl($user['role_name']));
             exit;
         }

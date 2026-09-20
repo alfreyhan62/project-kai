@@ -24,8 +24,8 @@ if (!$file || !in_array($file['mime_type'], $allowedMimes, true)) {
     http_response_code(403);
     exit('File tidak dapat dipratinjau.');
 }
-$storageRoot = realpath(__DIR__ . DIRECTORY_SEPARATOR . 'storage' . DIRECTORY_SEPARATOR . 'uploads');
-$path = realpath(__DIR__ . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $file['path_file']));
+$storageRoot = realpath(dirname(__DIR__) . DIRECTORY_SEPARATOR . 'storage' . DIRECTORY_SEPARATOR . 'uploads');
+$path = realpath(dirname(__DIR__) . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $file['path_file']));
 if ($storageRoot === false || $path === false || strpos($path, $storageRoot . DIRECTORY_SEPARATOR) !== 0 || !is_file($path)) {
     http_response_code(404);
     exit('File tidak ditemukan.');
