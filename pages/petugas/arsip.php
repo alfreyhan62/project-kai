@@ -4,6 +4,7 @@ declare(strict_types=1);
 require_once dirname(__DIR__, 2) . '/config/database.php';
 require_once dirname(__DIR__, 2) . '/includes/auth.php';
 require_once dirname(__DIR__, 2) . '/includes/archive.php';
+require_once dirname(__DIR__, 2) . '/includes/klasifikasi.php';
 require_once dirname(__DIR__, 2) . '/includes/reminder.php';
 requireRole(2);
 $unit = (int) ($_SESSION['unit_id'] ?? 0);
@@ -21,7 +22,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
         $action = (string) ($_POST['action'] ?? '');
         $id = (int) ($_POST['arsip_id'] ?? 0);
         if (in_array($action, ['create', 'update'], true)) {
-            $data = ['no_registrasi' => trim((string) ($_POST['no_registrasi'] ?? '')), 'no_surat' => trim((string) ($_POST['no_surat'] ?? '')), 'perihal' => trim((string) ($_POST['perihal'] ?? '')), 'tanggal_surat' => (string) ($_POST['tanggal_surat'] ?? ''), 'jenis_surat_id' => (int) ($_POST['jenis_surat_id'] ?? 0), 'klasifikasi_id' => ($_POST['klasifikasi_id'] ?? '') === '' ? null : (int) $_POST['klasifikasi_id'], 'rak_id' => ($_POST['rak_id'] ?? '') === '' ? null : (int) $_POST['rak_id'], 'masa_simpan_tahun' => ($_POST['masa_simpan_tahun'] ?? '') === '' ? null : (int) $_POST['masa_simpan_tahun'], 'tanggal_mulai_retensi' => ($_POST['tanggal_mulai_retensi'] ?? '') === '' ? null : (string) $_POST['tanggal_mulai_retensi'], 'tanggal_jatuh_tempo' => ($_POST['tanggal_jatuh_tempo'] ?? '') === '' ? null : (string) $_POST['tanggal_jatuh_tempo'], 'status_arsip' => (string) ($_POST['status_arsip'] ?? 'Inaktif'), 'detail_arsip' => trim((string) ($_POST['detail_arsip'] ?? '')) ?: null, 'keterangan' => trim((string) ($_POST['keterangan'] ?? '')) ?: null];
+            $data = ['no_registrasi' => trim((string) ($_POST['no_registrasi'] ?? '')), 'no_surat' => trim((string) ($_POST['no_surat'] ?? '')), 'perihal' => trim((string) ($_POST['perihal'] ?? '')), 'tanggal_surat' => (string) ($_POST['tanggal_surat'] ?? ''), 'jenis_surat_id' => (int) ($_POST['jenis_surat_id'] ?? 0), 'klasifikasi_id' => ($_POST['klasifikasi_id'] ?? '') === '' ? null : (int) $_POST['klasifikasi_id'], 'rak_id' => null, 'ruangan' => trim((string) ($_POST['ruangan'] ?? '')), 'lemari' => trim((string) ($_POST['lemari'] ?? '')), 'rak' => trim((string) ($_POST['rak'] ?? '')), 'masa_simpan_tahun' => ($_POST['masa_simpan_tahun'] ?? '') === '' ? null : (int) $_POST['masa_simpan_tahun'], 'tanggal_mulai_retensi' => ($_POST['tanggal_mulai_retensi'] ?? '') === '' ? null : (string) $_POST['tanggal_mulai_retensi'], 'tanggal_jatuh_tempo' => ($_POST['tanggal_jatuh_tempo'] ?? '') === '' ? null : (string) $_POST['tanggal_jatuh_tempo'], 'status_arsip' => (string) ($_POST['status_arsip'] ?? 'Inaktif'), 'detail_arsip' => trim((string) ($_POST['detail_arsip'] ?? '')) ?: null, 'keterangan' => trim((string) ($_POST['keterangan'] ?? '')) ?: null];
             if ($data['no_registrasi'] === '' || $data['no_surat'] === '' || $data['perihal'] === '' || !preg_match('/^\d{4}-\d{2}-\d{2}$/', $data['tanggal_surat']) || !$data['jenis_surat_id']) $errors[] = 'Field wajib belum lengkap atau tanggal tidak valid.';
             if (!in_array($data['status_arsip'], ['Inaktif', 'Permanen', 'Musnah'], true)) $errors[] = 'Status arsip tidak valid.';
             if ($data['status_arsip'] === 'Musnah' && (!$data['masa_simpan_tahun'] || !$data['tanggal_jatuh_tempo'])) $errors[] = 'Arsip Musnah wajib memiliki masa simpan dan tanggal jatuh tempo.';
@@ -33,15 +34,23 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
             $check = $pdo->prepare('SELECT 1 FROM jenis_surat WHERE jenis_surat_id=:id');
             $check->execute(['id' => $data['jenis_surat_id']]);
             if (!$check->fetchColumn()) $errors[] = 'Jenis surat tidak valid.';
-            if ($data['klasifikasi_id'] !== null) {
-                $check = $pdo->prepare('SELECT 1 FROM klasifikasi_arsip WHERE klasifikasi_id=:id');
-                $check->execute(['id' => $data['klasifikasi_id']]);
-                if (!$check->fetchColumn()) $errors[] = 'Klasifikasi tidak valid.';
-            }
+            $klasifikasiPath = $_POST['klasifikasi_path'] ?? [];
+            if (!is_array($klasifikasiPath)) $klasifikasiPath = [];
+            $klasifikasiPath = array_values(array_filter(array_map('intval', $klasifikasiPath), static fn(int $value): bool => $value > 0));
+            $data['klasifikasi_id'] = $klasifikasiPath ? end($klasifikasiPath) : null;
+            if (!klasifikasiPathValid($pdo, $klasifikasiPath)) $errors[] = 'Hierarki klasifikasi tidak valid.';
             if ($data['rak_id'] !== null && !validArchiveLocation($pdo, $unit, $data['rak_id'])) $errors[] = 'Rak tidak berada pada unit kerja Petugas.';
             $check = $pdo->prepare('SELECT 1 FROM arsip WHERE no_registrasi=:n AND arsip_id!=:id');
             $check->execute(['n' => $data['no_registrasi'], 'id' => $id]);
             if ($check->fetchColumn()) $errors[] = 'Nomor registrasi sudah digunakan.';
+            if (!$errors) {
+                try {
+                    $data['rak_id'] = archiveLocationId($pdo, $unit, $data['ruangan'], $data['lemari'], $data['rak']);
+                    unset($data['ruangan'], $data['lemari'], $data['rak']);
+                } catch (Throwable $e) {
+                    $errors[] = $e instanceof InvalidArgumentException ? $e->getMessage() : 'Lokasi penyimpanan tidak dapat disimpan.';
+                }
+            }
             $upload = $_FILES['document'] ?? null;
             $uploadPath = null;
             if ($action === 'create' && $upload && (int) $upload['error'] !== UPLOAD_ERR_NO_FILE) {
@@ -79,7 +88,9 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
             }
             if (!$errors && $action === 'update' && $id) {
                 $statement = $pdo->prepare('UPDATE arsip SET jenis_surat_id=:jenis_surat_id,klasifikasi_id=:klasifikasi_id,rak_id=:rak_id,no_surat=:no_surat,perihal=:perihal,tanggal_surat=:tanggal_surat,masa_simpan_tahun=:masa_simpan_tahun,tanggal_mulai_retensi=:tanggal_mulai_retensi,tanggal_jatuh_tempo=:tanggal_jatuh_tempo,status_arsip=:status_arsip,detail_arsip=:detail_arsip,keterangan=:keterangan WHERE arsip_id=:id AND unit_id=:unit');
-                $statement->execute($data + ['id' => $id, 'unit' => $unit]);
+                $statement->execute([
+                    'jenis_surat_id' => $data['jenis_surat_id'], 'klasifikasi_id' => $data['klasifikasi_id'], 'rak_id' => $data['rak_id'], 'no_surat' => $data['no_surat'], 'perihal' => $data['perihal'], 'tanggal_surat' => $data['tanggal_surat'], 'masa_simpan_tahun' => $data['masa_simpan_tahun'], 'tanggal_mulai_retensi' => $data['tanggal_mulai_retensi'], 'tanggal_jatuh_tempo' => $data['tanggal_jatuh_tempo'], 'status_arsip' => $data['status_arsip'], 'detail_arsip' => $data['detail_arsip'], 'keterangan' => $data['keterangan'], 'id' => $id, 'unit' => $unit,
+                ]);
                 if (!$statement->rowCount()) $errors[] = 'Arsip tidak ditemukan atau di luar unit kerja.';
                 else {
                     $pdo->prepare("INSERT INTO riwayat_arsip(arsip_id,user_id,aksi,keterangan) VALUES(:a,:u,'UPDATE','Arsip diperbarui')")->execute(['a' => $id, 'u' => (int) $_SESSION['user_id']]);
@@ -100,10 +111,24 @@ if (isset($_GET['edit'])) {
     }
 }
 $jenis = $pdo->query('SELECT jenis_surat_id,nama_jenis FROM jenis_surat ORDER BY nama_jenis')->fetchAll();
-$klas = $pdo->query('SELECT klasifikasi_id,kode_klasifikasi,nama_klasifikasi FROM klasifikasi_arsip ORDER BY kode_klasifikasi')->fetchAll();
-$locationsStatement = $pdo->prepare('SELECT r.nama_ruangan,l.lemari_id,COALESCE(l.nama_lemari,l.kode_lemari) nama_lemari,k.rak_id,k.kode_rak FROM ruangan r JOIN lemari l ON l.ruangan_id=r.ruangan_id JOIN rak k ON k.lemari_id=l.lemari_id WHERE r.unit_id=:u ORDER BY r.nama_ruangan,l.kode_lemari,k.kode_rak');
-$locationsStatement->execute(['u' => $unit]);
-$locations = $locationsStatement->fetchAll();
+$klasPath = [];
+if (!empty($edit['klasifikasi_id'])) {
+    $currentId = (int) $edit['klasifikasi_id'];
+    $parentStatement = $pdo->prepare('SELECT klasifikasi_id,parent_id FROM klasifikasi_arsip WHERE klasifikasi_id=:id');
+    while ($currentId) {
+        $parentStatement->execute(['id' => $currentId]);
+        $current = $parentStatement->fetch();
+        if (!$current) break;
+        array_unshift($klasPath, (int) $current['klasifikasi_id']);
+        $currentId = $current['parent_id'] === null ? 0 : (int) $current['parent_id'];
+    }
+}
+$locationPath = ['ruangan_id' => 0, 'lemari_id' => 0, 'rak_id' => (int) ($edit['rak_id'] ?? 0), 'nama_ruangan' => '', 'nama_lemari' => '', 'nama_rak' => ''];
+if ($locationPath['rak_id']) {
+    $locationStatement = $pdo->prepare('SELECT r.ruangan_id,l.lemari_id,k.rak_id,r.nama_ruangan,l.nama_lemari,k.nama_rak FROM rak k JOIN lemari l ON l.lemari_id=k.lemari_id JOIN ruangan r ON r.ruangan_id=l.ruangan_id WHERE k.rak_id=:rak_id AND r.unit_id=:unit_id');
+    $locationStatement->execute(['rak_id' => $locationPath['rak_id'], 'unit_id' => $unit]);
+    $locationPath = $locationStatement->fetch() ?: $locationPath;
+}
 $q = trim((string) ($_GET['q'] ?? ''));
 $jenisFilter = (int) ($_GET['jenis_surat_id'] ?? 0);
 $klasFilter = (int) ($_GET['klasifikasi_id'] ?? 0);
@@ -1718,11 +1743,7 @@ $items = $statement->fetchAll();
                                 <p>Atur klasifikasi dan lokasi penyimpanan fisik.</p>
                             </div>
                         </div>
-                        <div class="form-grid"><label class="form-field">Klasifikasi<select name="klasifikasi_id">
-                                    <option value="">-</option><?php foreach ($klas as $x): ?><option value="<?= (int)$x['klasifikasi_id'] ?>" <?= ((int)($edit['klasifikasi_id'] ?? 0) === (int)$x['klasifikasi_id']) ? 'selected' : '' ?>><?= e($x['kode_klasifikasi'] . ' - ' . $x['nama_klasifikasi']) ?></option><?php endforeach; ?>
-                                </select></label><label class="form-field">Rak<select name="rak_id">
-                                    <option value="">-</option><?php foreach ($locations as $x): ?><option value="<?= (int)$x['rak_id'] ?>" <?= ((int)($edit['rak_id'] ?? 0) === (int)$x['rak_id']) ? 'selected' : '' ?>><?= e($x['nama_ruangan'] . ' / ' . $x['nama_lemari'] . ' / ' . $x['kode_rak']) ?></option><?php endforeach; ?>
-                                </select></label></div>
+                        <div class="form-grid"><div class="form-field wide"><span>Klasifikasi Arsip</span><div id="klasifikasi-bertingkat" data-selected='<?= e(json_encode($klasPath)) ?>'><select name="klasifikasi_path[]" data-level="0" aria-label="Klasifikasi Arsip"><option value="">Pilih klasifikasi utama</option></select></div><small>Pilih hingga klasifikasi terakhir yang sesuai.</small></div><label class="form-field">Ruangan<input name="ruangan" maxlength="100" value="<?= e($locationPath['nama_ruangan']) ?>" placeholder="Contoh: Ruangan Arsip Operasi"></label><label class="form-field">Lemari<input name="lemari" maxlength="100" value="<?= e($locationPath['nama_lemari']) ?>" placeholder="Contoh: Lemari Arsip Operasi 01"></label><label class="form-field">Rak<input name="rak" maxlength="100" value="<?= e($locationPath['nama_rak']) ?>" placeholder="Contoh: lp001 Rak Operasi 01"></label></div>
                     </section>
                     <section class="form-section retention-section">
                         <div class="form-section-header"><span class="material-symbols-outlined">schedule</span>
@@ -1731,7 +1752,7 @@ $items = $statement->fetchAll();
                                 <p>Informasi masa simpan dan tanggal jatuh tempo.</p>
                             </div>
                         </div>
-                        <div class="form-grid"><label class="form-field">Status<select class="status-select status-<?= strtolower((string)($edit['status_arsip'] ?? 'Inaktif')) ?>" name="status_arsip"><?php foreach (['Inaktif', 'Permanen', 'Musnah'] as $x): ?><option <?= $x === ($edit['status_arsip'] ?? 'Inaktif') ? 'selected' : '' ?>><?= $x ?></option><?php endforeach; ?></select></label><label class="form-field">Masa Simpan Tahun<input id="masa-simpan-tahun" type="number" min="1" max="10" name="masa_simpan_tahun" value="<?= e((string)($edit['masa_simpan_tahun'] ?? '')) ?>"><small>Masukkan jumlah tahun sesuai ketentuan.</small></label><label class="form-field">Jatuh Tempo<input id="tanggal-jatuh-tempo" type="date" name="tanggal_jatuh_tempo" value="<?= e($edit['tanggal_jatuh_tempo'] ?? '') ?>"></label></div>
+                        <div class="form-grid"><label class="form-field">Status<select class="status-select status-<?= strtolower((string)($edit['status_arsip'] ?? 'Inaktif')) ?>" name="status_arsip"><?php foreach (['Inaktif', 'Permanen', 'Musnah'] as $x): ?><option <?= $x === ($edit['status_arsip'] ?? 'Inaktif') ? 'selected' : '' ?>><?= $x ?></option><?php endforeach; ?></select></label><label class="form-field" id="masa-simpan-field">Masa Simpan Tahun<input id="masa-simpan-tahun" type="number" min="1" max="10" name="masa_simpan_tahun" value="<?= e((string)($edit['masa_simpan_tahun'] ?? '')) ?>"><small>Masukkan jumlah tahun sesuai ketentuan.</small></label><label class="form-field" id="jatuh-tempo-field">Jatuh Tempo<input id="tanggal-jatuh-tempo" type="date" name="tanggal_jatuh_tempo" value="<?= e($edit['tanggal_jatuh_tempo'] ?? '') ?>"></label></div>
                     </section>
                     <section class="form-section detail-section">
                         <div class="form-section-header"><span class="material-symbols-outlined">notes</span>
@@ -1802,6 +1823,11 @@ $items = $statement->fetchAll();
         </div>
     </div>
     <style>
+        #masa-simpan-field[hidden],
+        #jatuh-tempo-field[hidden] {
+            display: none !important
+        }
+
         .archive-confirm-modal {
             position: fixed;
             inset: 0;
@@ -1928,8 +1954,11 @@ $items = $statement->fetchAll();
         });
         const tanggalSurat = document.getElementById('tanggal-surat'), masaSimpanTahun = document.getElementById('masa-simpan-tahun'), tanggalJatuhTempo = document.getElementById('tanggal-jatuh-tempo'), statusArsip = archiveForm?.querySelector('[name="status_arsip"]');
         function isiTanggalJatuhTempo() {
+            const showRetensi = statusArsip?.value === 'Inaktif';
+            document.getElementById('masa-simpan-field').hidden = !showRetensi;
+            document.getElementById('jatuh-tempo-field').hidden = !showRetensi;
             const years = Number(masaSimpanTahun?.value);
-            if (!tanggalSurat?.value || statusArsip?.value !== 'Inaktif' || !Number.isInteger(years) || years < 1 || years > 10) {
+            if (!tanggalSurat?.value || !showRetensi || !Number.isInteger(years) || years < 1 || years > 10) {
                 if (tanggalJatuhTempo && (!statusArsip?.value || statusArsip.value === 'Inaktif')) tanggalJatuhTempo.value = '';
                 return;
             }
@@ -1940,6 +1969,40 @@ $items = $statement->fetchAll();
         [tanggalSurat, masaSimpanTahun, statusArsip].forEach(input => input?.addEventListener('input', isiTanggalJatuhTempo));
         [tanggalSurat, masaSimpanTahun, statusArsip].forEach(input => input?.addEventListener('change', isiTanggalJatuhTempo));
         isiTanggalJatuhTempo();
+        const klasifikasiContainer = document.getElementById('klasifikasi-bertingkat');
+        if (klasifikasiContainer) {
+            const selectedPath = JSON.parse(klasifikasiContainer.dataset.selected || '[]');
+            const labels = ['Klasifikasi Arsip', 'Subklasifikasi 1', 'Subklasifikasi 2', 'Rincian Arsip'];
+            const placeholders = ['Pilih klasifikasi utama', 'Pilih subklasifikasi', 'Pilih subklasifikasi lanjutan', 'Pilih rincian arsip'];
+            const text = item => `${item.kode_klasifikasi ? `${item.kode_klasifikasi} — ` : ''}${item.nama_klasifikasi}`;
+            const load = async (select, parentId, selectedId = 0) => {
+                select.disabled = true;
+                select.setAttribute('aria-label', labels[Number(select.dataset.level)] || 'Rincian Arsip');
+                select.innerHTML = `<option value="">${placeholders[Number(select.dataset.level)] || 'Pilih rincian arsip'}</option>`;
+                const response = await fetch(`../../api/klasifikasi-anak.php?parent_id=${parentId}`);
+                if (!response.ok) return;
+                const items = await response.json();
+                for (const item of items) select.add(new Option(text(item), item.klasifikasi_id, false, Number(selectedId) === Number(item.klasifikasi_id)));
+                select.disabled = false;
+                if (selectedId) select.dispatchEvent(new Event('change'));
+            };
+            const selectChanged = async function() {
+                while (this.nextElementSibling) this.nextElementSibling.remove();
+                if (!this.value) return;
+                const level = Number(this.dataset.level) + 1;
+                const child = document.createElement('select');
+                child.name = 'klasifikasi_path[]';
+                child.dataset.level = String(level);
+                child.disabled = true;
+                child.addEventListener('change', selectChanged);
+                this.after(child);
+                await load(child, this.value, selectedPath[level]);
+                if (child.options.length === 1) child.remove();
+            };
+            const root = klasifikasiContainer.querySelector('select');
+            root.addEventListener('change', selectChanged);
+            load(root, 0, selectedPath[0]);
+        }
         let archiveConfirmed = false;
         if (archiveForm) {
             archiveForm.addEventListener('submit', function(event) {

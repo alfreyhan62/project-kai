@@ -24,6 +24,24 @@ function validArchiveLocation(PDO $pdo, int $unitId, int $rakId): bool
     return (int) $statement->fetchColumn() > 0;
 }
 
+function archiveLocationId(PDO $pdo, int $unitId, string $ruangan, string $lemari, string $rak): ?int
+{
+    if ($ruangan === '' && $lemari === '' && $rak === '') return null;
+    if ($ruangan === '' || $lemari === '' || $rak === '') throw new InvalidArgumentException('Ruangan, Lemari, dan Rak harus diisi lengkap.');
+    $pdo->prepare('INSERT INTO ruangan(unit_id,kode_ruangan,nama_ruangan) VALUES(:unit_id,:kode,:nama) ON DUPLICATE KEY UPDATE nama_ruangan=VALUES(nama_ruangan)')->execute(['unit_id' => $unitId, 'kode' => $ruangan, 'nama' => $ruangan]);
+    $findRuangan = $pdo->prepare('SELECT ruangan_id FROM ruangan WHERE unit_id=:unit_id AND kode_ruangan=:kode');
+    $findRuangan->execute(['unit_id' => $unitId, 'kode' => $ruangan]);
+    $ruanganId = (int) $findRuangan->fetchColumn();
+    $pdo->prepare('INSERT INTO lemari(ruangan_id,kode_lemari,nama_lemari) VALUES(:ruangan_id,:kode,:nama) ON DUPLICATE KEY UPDATE nama_lemari=VALUES(nama_lemari)')->execute(['ruangan_id' => $ruanganId, 'kode' => $lemari, 'nama' => $lemari]);
+    $findLemari = $pdo->prepare('SELECT lemari_id FROM lemari WHERE ruangan_id=:ruangan_id AND kode_lemari=:kode');
+    $findLemari->execute(['ruangan_id' => $ruanganId, 'kode' => $lemari]);
+    $lemariId = (int) $findLemari->fetchColumn();
+    $pdo->prepare('INSERT INTO rak(lemari_id,kode_rak,nama_rak) VALUES(:lemari_id,:kode,:nama) ON DUPLICATE KEY UPDATE nama_rak=VALUES(nama_rak)')->execute(['lemari_id' => $lemariId, 'kode' => $rak, 'nama' => $rak]);
+    $findRak = $pdo->prepare('SELECT rak_id FROM rak WHERE lemari_id=:lemari_id AND kode_rak=:kode');
+    $findRak->execute(['lemari_id' => $lemariId, 'kode' => $rak]);
+    return (int) $findRak->fetchColumn();
+}
+
 function archiveUploadAllowed(string $name, string $mime, int $size): bool
 {
     $allowedTypes = [

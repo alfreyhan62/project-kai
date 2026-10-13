@@ -10,7 +10,7 @@ $errors = [];
 $visitorUnit = $pdo->prepare('SELECT uk.unit_id, uk.nama_unit FROM users u INNER JOIN unit_kerja uk ON uk.unit_id = u.unit_id WHERE u.user_id = :user_id AND u.role_id = :role_id AND u.is_active = TRUE');
 $visitorUnit->execute(['user_id' => (int) $_SESSION['user_id'], 'role_id' => (int) $_SESSION['role_id']]);
 $visitorUnit = $visitorUnit->fetch() ?: null;
-$units = $visitorUnit ? [$visitorUnit] : [];
+$units = $pdo->query('SELECT unit_id,nama_unit FROM unit_kerja ORDER BY nama_unit')->fetchAll();
 $spkStatuses = ['Draft', 'Aktif', 'Selesai', 'Dibatalkan'];
 $defaultJenisSuratId = (int) $pdo->query('SELECT jenis_surat_id FROM jenis_surat ORDER BY jenis_surat_id LIMIT 1')->fetchColumn();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -20,7 +20,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $selesai = (string) ($_POST['tanggal_selesai_pekerjaan'] ?? '');
     $jangkaWaktu = preg_match('/^\d{4}-\d{2}-\d{2}$/', $mulai) && preg_match('/^\d{4}-\d{2}-\d{2}$/', $selesai) ? (new DateTimeImmutable($mulai))->diff(new DateTimeImmutable($selesai))->days + 1 : null;
     $unitId = (int) ($visitorUnit['unit_id'] ?? 0);
-    $data = ['unit_id' => $unitId, 'no_registrasi' => '', 'no_surat' => '', 'perihal' => '', 'tanggal_surat' => '', 'jenis_surat_id' => $defaultJenisSuratId, 'klasifikasi_id' => null, 'detail_arsip' => null, 'keterangan' => null, 'nomor_spk' => trim((string) ($_POST['nomor_spk'] ?? '')), 'tanggal_spk' => (string) ($_POST['tanggal_spk'] ?? ''), 'vendor' => trim((string) ($_POST['vendor'] ?? '')), 'nama_pekerjaan' => trim((string) ($_POST['nama_pekerjaan'] ?? '')), 'nilai_spk' => $nilaiSpk === '' ? null : (int) $nilaiSpk, 'kategori_nilai' => $nilaiSpk !== '' && (int) $nilaiSpk > 500000000 ? '> Rp500 Juta' : '≤ Rp500 Juta', 'tanggal_mulai_pekerjaan' => $mulai, 'tanggal_selesai_pekerjaan' => $selesai, 'jangka_waktu' => $jangkaWaktu, 'penanggung_jawab_unit_id' => $unitId, 'status_spk' => (string) ($_POST['status_spk'] ?? '')];
+    $penanggungJawabUnitId = (int) ($_POST['penanggung_jawab_unit_id'] ?? 0);
+    $data = ['unit_id' => $unitId, 'no_registrasi' => '', 'no_surat' => '', 'perihal' => '', 'tanggal_surat' => '', 'jenis_surat_id' => $defaultJenisSuratId, 'klasifikasi_id' => null, 'detail_arsip' => null, 'keterangan' => null, 'nomor_spk' => trim((string) ($_POST['nomor_spk'] ?? '')), 'tanggal_spk' => (string) ($_POST['tanggal_spk'] ?? ''), 'vendor' => trim((string) ($_POST['vendor'] ?? '')), 'nama_pekerjaan' => trim((string) ($_POST['nama_pekerjaan'] ?? '')), 'nilai_spk' => $nilaiSpk === '' ? null : (int) $nilaiSpk, 'kategori_nilai' => $nilaiSpk !== '' && (int) $nilaiSpk > 500000000 ? '> Rp500 Juta' : '≤ Rp500 Juta', 'tanggal_mulai_pekerjaan' => $mulai, 'tanggal_selesai_pekerjaan' => $selesai, 'jangka_waktu' => $jangkaWaktu, 'penanggung_jawab_unit_id' => $penanggungJawabUnitId, 'status_spk' => (string) ($_POST['status_spk'] ?? '')];
     $data['no_registrasi'] = 'SPK-' . $data['nomor_spk'];
     $data['no_surat'] = $data['nomor_spk'];
     $data['perihal'] = $data['nama_pekerjaan'];
