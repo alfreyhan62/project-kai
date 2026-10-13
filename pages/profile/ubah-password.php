@@ -10,7 +10,7 @@ $notice = '';
 $userId = (int) $_SESSION['user_id'];
 $roleId = (int) $_SESSION['role_id'];
 
-$profileStatement = $pdo->prepare('SELECT username, nama_lengkap, email, password_hash FROM users WHERE user_id = :user_id AND role_id = :role_id AND is_active = 1');
+$profileStatement = $pdo->prepare('SELECT username, nama_lengkap, email, password_hash FROM users WHERE user_id = :user_id AND role_id = :role_id AND is_active = TRUE');
 $profileStatement->execute(['user_id' => $userId, 'role_id' => $roleId]);
 $user = $profileStatement->fetch();
 if (!$user) {
@@ -62,7 +62,7 @@ $assetBase = '../..';
         <div><b>e-ARSIP KAI DIVRE III</b><small>Web Pengarsipan Digital - Kantor KAI Divre III</small></div>
         <details class="user-menu">
             <summary><span class="user-avatar"><?= profileAvatar('../..', $name) ?></span><span class="user-summary-text"><b><?= e($name) ?></b><small><?= e($roleLabel) ?></small></span><i class="user-summary-chevron material-symbols-outlined">expand_more</i></summary>
-            <div class="user-dropdown"><div class="user-dropdown-header"><b><?= e($name) ?></b><small><?= e($roleLabel) ?></small></div><a href="ubah-profil.php"><i class="material-symbols-outlined">person</i>Ubah Profil</a><a href="ubah-password.php"><i class="material-symbols-outlined">key</i>Ubah Password</a><a href="../../logout.php"><i class="material-symbols-outlined">logout</i>Logout</a></div>
+            <div class="user-dropdown"><div class="user-dropdown-header"><b><?= e($name) ?></b><small><?= e($roleLabel) ?></small></div><a href="ubah-profil.php"><i class="material-symbols-outlined">person</i>Ubah Profil</a><a href="ubah-password.php"><i class="material-symbols-outlined">key</i>Ubah Password</a><?= logoutForm('../../logout.php') ?></div>
         </details>
     </header>
     <main class="visitor-content">

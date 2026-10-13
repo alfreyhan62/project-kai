@@ -77,7 +77,7 @@ $items = $s->fetchAll();
             <details class="user-menu">
                 <summary><span class="user-avatar"><?= profileAvatar('../..', (string) ($_SESSION['nama_lengkap'] ?? $_SESSION['username'] ?? 'User')) ?></span><span class="user-summary-text"><b><?= e((string)($_SESSION['nama_lengkap'] ?? $_SESSION['username'] ?? 'User')) ?></b><small><?= e((string)($_SESSION['role_name'] ?? 'Admin')) ?></small></span><i class="user-summary-chevron material-symbols-outlined">expand_more</i></summary>
                 <div class="user-dropdown">
-                    <div class="user-dropdown-header"><b><?= e((string)($_SESSION['nama_lengkap'] ?? $_SESSION['username'] ?? 'User')) ?></b><small><?= e((string)($_SESSION['role_name'] ?? 'Admin')) ?></small></div><a href="../profile/ubah-profil.php"><i class="material-symbols-outlined">person</i>Ubah Profil</a><a href="../profile/ubah-password.php"><i class="material-symbols-outlined">key</i>Ubah Password</a><a href="../../logout.php"><i class="material-symbols-outlined">logout</i>Logout</a>
+                    <div class="user-dropdown-header"><b><?= e((string)($_SESSION['nama_lengkap'] ?? $_SESSION['username'] ?? 'User')) ?></b><small><?= e((string)($_SESSION['role_name'] ?? 'Admin')) ?></small></div><a href="../profile/ubah-profil.php"><i class="material-symbols-outlined">person</i>Ubah Profil</a><a href="../profile/ubah-password.php"><i class="material-symbols-outlined">key</i>Ubah Password</a><?= logoutForm('../../logout.php') ?>
                 </div>
             </details>
         </header>

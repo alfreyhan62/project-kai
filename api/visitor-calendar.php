@@ -24,7 +24,7 @@ if (!preg_match('/^\d{4}-\d{2}$/', $month) || !$monthDate || $monthDate->format(
 try {
     $from = $month . '-01';
     $to = (new DateTimeImmutable($from))->modify('+1 month')->format('Y-m-d');
-    $statement = $pdo->prepare("SELECT tanggal_surat,status_arsip,COUNT(*) AS jumlah FROM arsip WHERE tanggal_surat >= :from AND tanggal_surat < :to AND status_arsip IN ('Aktif','Permanen','Musnah') GROUP BY tanggal_surat,status_arsip");
+    $statement = $pdo->prepare("SELECT tanggal_surat,status_arsip,COUNT(*) AS jumlah FROM arsip WHERE tanggal_surat >= :from AND tanggal_surat < :to AND status_arsip IN ('Inaktif','Permanen','Musnah') GROUP BY tanggal_surat,status_arsip");
     $statement->execute(['from' => $from, 'to' => $to]);
     $days = [];
     foreach ($statement->fetchAll() as $row) {

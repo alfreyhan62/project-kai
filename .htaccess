@@ -1,8 +1,7 @@
 Options -Indexes
 
 RewriteEngine On
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^ "/new kai/404.php" [R=302,L]
-
-ErrorDocument 404 /new%20kai/404.php
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_URI} ^/e-ARSIP_KAI/$
+RewriteRule ^ - [L]
+RewriteRule ^(?!404\.php$).+$ /e-ARSIP_KAI/404.php [R=302,L,NE]

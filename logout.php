@@ -5,6 +5,11 @@ require_once __DIR__ . '/config/database.php';
 require_once __DIR__ . '/includes/auth.php';
 startSession();
 
+if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !verifyCsrfToken()) {
+    http_response_code(403);
+    exit('Permintaan tidak valid.');
+}
+
 $_SESSION = [];
 if (ini_get('session.use_cookies')) {
     $params = session_get_cookie_params();

@@ -21,10 +21,10 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
         $action = (string) ($_POST['action'] ?? '');
         $id = (int) ($_POST['arsip_id'] ?? 0);
         if (in_array($action, ['create', 'update'], true)) {
-            $data = ['no_registrasi' => trim((string) ($_POST['no_registrasi'] ?? '')), 'no_surat' => trim((string) ($_POST['no_surat'] ?? '')), 'perihal' => trim((string) ($_POST['perihal'] ?? '')), 'tanggal_surat' => (string) ($_POST['tanggal_surat'] ?? ''), 'jenis_surat_id' => (int) ($_POST['jenis_surat_id'] ?? 0), 'klasifikasi_id' => ($_POST['klasifikasi_id'] ?? '') === '' ? null : (int) $_POST['klasifikasi_id'], 'rak_id' => ($_POST['rak_id'] ?? '') === '' ? null : (int) $_POST['rak_id'], 'masa_simpan_tahun' => ($_POST['masa_simpan_tahun'] ?? '') === '' ? null : (int) $_POST['masa_simpan_tahun'], 'tanggal_mulai_retensi' => ($_POST['tanggal_mulai_retensi'] ?? '') === '' ? null : (string) $_POST['tanggal_mulai_retensi'], 'tanggal_jatuh_tempo' => ($_POST['tanggal_jatuh_tempo'] ?? '') === '' ? null : (string) $_POST['tanggal_jatuh_tempo'], 'status_arsip' => (string) ($_POST['status_arsip'] ?? 'Aktif'), 'detail_arsip' => trim((string) ($_POST['detail_arsip'] ?? '')) ?: null, 'keterangan' => trim((string) ($_POST['keterangan'] ?? '')) ?: null];
+            $data = ['no_registrasi' => trim((string) ($_POST['no_registrasi'] ?? '')), 'no_surat' => trim((string) ($_POST['no_surat'] ?? '')), 'perihal' => trim((string) ($_POST['perihal'] ?? '')), 'tanggal_surat' => (string) ($_POST['tanggal_surat'] ?? ''), 'jenis_surat_id' => (int) ($_POST['jenis_surat_id'] ?? 0), 'klasifikasi_id' => ($_POST['klasifikasi_id'] ?? '') === '' ? null : (int) $_POST['klasifikasi_id'], 'rak_id' => ($_POST['rak_id'] ?? '') === '' ? null : (int) $_POST['rak_id'], 'masa_simpan_tahun' => ($_POST['masa_simpan_tahun'] ?? '') === '' ? null : (int) $_POST['masa_simpan_tahun'], 'tanggal_mulai_retensi' => ($_POST['tanggal_mulai_retensi'] ?? '') === '' ? null : (string) $_POST['tanggal_mulai_retensi'], 'tanggal_jatuh_tempo' => ($_POST['tanggal_jatuh_tempo'] ?? '') === '' ? null : (string) $_POST['tanggal_jatuh_tempo'], 'status_arsip' => (string) ($_POST['status_arsip'] ?? 'Inaktif'), 'detail_arsip' => trim((string) ($_POST['detail_arsip'] ?? '')) ?: null, 'keterangan' => trim((string) ($_POST['keterangan'] ?? '')) ?: null];
             if ($data['no_registrasi'] === '' || $data['no_surat'] === '' || $data['perihal'] === '' || !preg_match('/^\d{4}-\d{2}-\d{2}$/', $data['tanggal_surat']) || !$data['jenis_surat_id']) $errors[] = 'Field wajib belum lengkap atau tanggal tidak valid.';
-            if (!in_array($data['status_arsip'], ['Aktif', 'Permanen', 'Musnah'], true)) $errors[] = 'Status arsip tidak valid.';
-            if ($data['status_arsip'] === 'Musnah' && (!$data['masa_simpan_tahun'] || !$data['tanggal_mulai_retensi'] || !$data['tanggal_jatuh_tempo'])) $errors[] = 'Arsip Musnah wajib memiliki masa simpan dan tanggal retensi/jatuh tempo.';
+            if (!in_array($data['status_arsip'], ['Inaktif', 'Permanen', 'Musnah'], true)) $errors[] = 'Status arsip tidak valid.';
+            if ($data['status_arsip'] === 'Musnah' && (!$data['masa_simpan_tahun'] || !$data['tanggal_jatuh_tempo'])) $errors[] = 'Arsip Musnah wajib memiliki masa simpan dan tanggal jatuh tempo.';
             if ($data['status_arsip'] === 'Permanen') {
                 $data['masa_simpan_tahun'] = null;
                 $data['tanggal_mulai_retensi'] = null;
@@ -48,7 +48,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
                 if ((int) $upload['error'] !== UPLOAD_ERR_OK) $errors[] = 'File arsip gagal diunggah.';
                 else {
                     $mime = (new finfo(FILEINFO_MIME_TYPE))->file((string) $upload['tmp_name']);
-                    if (!archiveUploadAllowed((string) $upload['name'], $mime, (int) $upload['size'])) $errors[] = 'File harus PDF, JPG, JPEG, atau PNG maksimal 20 MB.';
+                    if (!archiveUploadAllowed((string) $upload['name'], $mime, (int) $upload['size'])) $errors[] = 'File harus PDF, JPG, JPEG, PNG, XLS, atau XLSX maksimal 20 MB.';
                     else {
                         $extension = strtolower(pathinfo((string) $upload['name'], PATHINFO_EXTENSION));
                         $uploadPath = archiveStoragePath($extension);
@@ -62,7 +62,8 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
                         $uploadAbsolutePath = dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $uploadPath);
                         if (!move_uploaded_file((string) $upload['tmp_name'], $uploadAbsolutePath)) throw new RuntimeException('File gagal disimpan.');
                     }
-                    $pdo->prepare('INSERT INTO arsip(unit_id,jenis_surat_id,klasifikasi_id,rak_id,no_registrasi,no_surat,perihal,tanggal_surat,masa_simpan_tahun,tanggal_mulai_retensi,tanggal_jatuh_tempo,status_arsip,detail_arsip,keterangan,created_by) VALUES(:unit_id,:jenis_surat_id,:klasifikasi_id,:rak_id,:no_registrasi,:no_surat,:perihal,:tanggal_surat,:masa_simpan_tahun,:tanggal_mulai_retensi,:tanggal_jatuh_tempo,:status_arsip,:detail_arsip,:keterangan,:created_by)')->execute($data + ['unit_id' => $unit, 'created_by' => (int) $_SESSION['user_id']]);
+                    $statement = $pdo->prepare('INSERT INTO arsip(unit_id,jenis_surat_id,klasifikasi_id,rak_id,no_registrasi,no_surat,perihal,tanggal_surat,masa_simpan_tahun,tanggal_mulai_retensi,tanggal_jatuh_tempo,status_arsip,detail_arsip,keterangan,created_by) VALUES(:unit_id,:jenis_surat_id,:klasifikasi_id,:rak_id,:no_registrasi,:no_surat,:perihal,:tanggal_surat,:masa_simpan_tahun,:tanggal_mulai_retensi,:tanggal_jatuh_tempo,:status_arsip,:detail_arsip,:keterangan,:created_by)');
+                    $statement->execute($data + ['unit_id' => $unit, 'created_by' => (int) $_SESSION['user_id']]);
                     $newId = (int) $pdo->lastInsertId();
                     if ($uploadPath) $pdo->prepare('INSERT INTO file_arsip(arsip_id,nama_file,path_file,ekstensi,mime_type,ukuran_file,checksum,is_primary,uploaded_by) VALUES(:arsip_id,:nama_file,:path_file,:ekstensi,:mime_type,:ukuran_file,:checksum,0,:uploaded_by)')->execute(['arsip_id' => $newId, 'nama_file' => basename((string) $upload['name']), 'path_file' => $uploadPath, 'ekstensi' => $extension, 'mime_type' => $mime, 'ukuran_file' => (int) $upload['size'], 'checksum' => hash_file('sha256', $uploadAbsolutePath), 'uploaded_by' => (int) $_SESSION['user_id']]);
                     $pdo->prepare("INSERT INTO riwayat_arsip(arsip_id,user_id,aksi,keterangan) VALUES(:a,:u,'CREATE','Arsip dibuat')")->execute(['a' => $newId, 'u' => (int) $_SESSION['user_id']]);
@@ -120,7 +121,7 @@ if ($klasFilter > 0) {
     $sql .= ' AND a.klasifikasi_id=:klas';
     $params['klas'] = $klasFilter;
 }
-if (in_array($statusFilter, ['Aktif', 'Permanen', 'Musnah'], true)) {
+if (in_array($statusFilter, ['Inaktif', 'Permanen', 'Musnah'], true)) {
     $sql .= ' AND a.status_arsip=:status';
     $params['status'] = $statusFilter;
 }
@@ -316,7 +317,7 @@ $items = $statement->fetchAll();
             font-weight: 700
         }
 
-        .archive-status-badge.status-aktif {
+        .archive-status-badge.status-inaktif {
             background: #dcfce7 !important;
             color: #166534
         }
@@ -1151,7 +1152,7 @@ $items = $statement->fetchAll();
             font-weight: 700
         }
 
-        .status-aktif {
+        .status-inaktif {
             background: #e9f8ef;
             color: #168044
         }
@@ -1298,7 +1299,7 @@ $items = $statement->fetchAll();
             font-weight: 500
         }
 
-        .status-select.status-aktif {
+        .status-select.status-inaktif {
             border-color: #a7dfba;
             background: #f3fcf6;
             color: #168044
@@ -1328,6 +1329,144 @@ $items = $statement->fetchAll();
 
         .form-actions .button.secondary {
             box-shadow: none
+        }
+
+        .archive-upload {
+            display: grid;
+            gap: 10px;
+            min-width: 0
+        }
+
+        .archive-upload-area {
+            display: grid;
+            justify-items: center;
+            gap: 8px;
+            min-height: 174px;
+            padding: 22px 18px;
+            border: 1px dashed #b9cbe5;
+            border-radius: 12px;
+            background: #f8fbff;
+            text-align: center;
+            transition: border-color .15s ease, background .15s ease, box-shadow .15s ease
+        }
+
+        .archive-upload-area:hover,
+        .archive-upload-area:focus-within {
+            border-color: #2563eb;
+            background: #f4f8ff;
+            box-shadow: 0 0 0 3px #2563eb12
+        }
+
+        .archive-upload-icon {
+            display: grid;
+            place-items: center;
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: #eaf2ff;
+            color: #2563eb
+        }
+
+        .archive-upload-icon .material-symbols-outlined {
+            font-size: 23px
+        }
+
+        .archive-upload-title {
+            color: var(--ink);
+            font-size: 13px;
+            font-weight: 700
+        }
+
+        .archive-upload-text,
+        .archive-upload-helper {
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: 500
+        }
+
+        .archive-upload-input {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0
+        }
+
+        .archive-upload-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            min-height: 36px;
+            padding: 0 12px;
+            border: 1px solid #c8d8ef;
+            border-radius: 9px;
+            background: #fff;
+            color: #1459a5;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: border-color .15s ease, background .15s ease, color .15s ease
+        }
+
+        .archive-upload-button:hover {
+            border-color: #8db1df;
+            background: #edf4ff;
+            color: #07306b
+        }
+
+        .archive-upload-button:focus-visible {
+            outline: 3px solid #bfdbfe;
+            outline-offset: 2px
+        }
+
+        .archive-upload-button .material-symbols-outlined {
+            font-size: 17px
+        }
+
+        .archive-upload-file {
+            display: grid;
+            grid-template-columns: auto minmax(0, 1fr);
+            gap: 9px;
+            align-items: center;
+            padding: 10px 12px;
+            border: 1px solid #d9e5f3;
+            border-radius: 10px;
+            background: #fff
+        }
+
+        .archive-upload-file[hidden] {
+            display: none
+        }
+
+        .archive-upload-file .material-symbols-outlined {
+            color: #2563eb;
+            font-size: 21px
+        }
+
+        .archive-upload-file-details {
+            min-width: 0;
+            text-align: left
+        }
+
+        .archive-upload-file-name {
+            overflow: hidden;
+            color: var(--ink);
+            font-size: 12px;
+            font-weight: 700;
+            text-overflow: ellipsis;
+            white-space: nowrap
+        }
+
+        .archive-upload-file-size {
+            display: block;
+            margin-top: 2px;
+            color: var(--muted);
+            font-size: 10px;
+            font-weight: 500
         }
 
         .document-subsection {
@@ -1538,7 +1677,7 @@ $items = $statement->fetchAll();
             <details class="user-menu">
                 <summary><span class="user-avatar"><?= profileAvatar('../..', $name) ?></span><span class="user-summary-text"><b><?= e($name) ?></b><small>Petugas</small></span><i class="user-summary-chevron material-symbols-outlined">expand_more</i></summary>
                 <div class="user-dropdown">
-                    <div class="user-dropdown-header"><b><?= e($name) ?></b><small>Petugas</small></div><a href="../profile/ubah-profil.php"><i class="material-symbols-outlined">person</i>Ubah Profil</a><a href="../profile/ubah-password.php"><i class="material-symbols-outlined">key</i>Ubah Password</a><a href="../../logout.php"><i class="material-symbols-outlined">logout</i>Logout</a>
+                    <div class="user-dropdown-header"><b><?= e($name) ?></b><small>Petugas</small></div><a href="../profile/ubah-profil.php"><i class="material-symbols-outlined">person</i>Ubah Profil</a><a href="../profile/ubah-password.php"><i class="material-symbols-outlined">key</i>Ubah Password</a><?= logoutForm('../../logout.php') ?>
                 </div>
             </details>
         </header>
@@ -1554,7 +1693,7 @@ $items = $statement->fetchAll();
                     <div><small>Total Arsip</small><strong><?= count($items) ?></strong></div><i class="material-symbols-outlined">inventory_2</i>
                 </article>
                 <article class="stat s-cyan">
-                    <div><small>Arsip Aktif</small><strong><?= count(array_filter($items, static fn($item): bool => $item['status_arsip'] === 'Aktif')) ?></strong></div><i class="material-symbols-outlined">task_alt</i>
+                    <div><small>Arsip Inaktif</small><strong><?= count(array_filter($items, static fn($item): bool => $item['status_arsip'] === 'Inaktif')) ?></strong></div><i class="material-symbols-outlined">task_alt</i>
                 </article>
                 <article class="stat s-purple">
                     <div><small>Permanen</small><strong><?= count(array_filter($items, static fn($item): bool => $item['status_arsip'] === 'Permanen')) ?></strong></div><i class="material-symbols-outlined">lock</i>
@@ -1570,7 +1709,7 @@ $items = $statement->fetchAll();
                                 <p>Identitas surat dan dokumen arsip.</p>
                             </div>
                         </div>
-                        <div class="form-grid"><label class="form-field">No. Registrasi<input name="no_registrasi" required value="<?= e($edit['no_registrasi'] ?? '') ?>" <?= $edit ? 'readonly' : '' ?>></label><label class="form-field">No. Surat<input name="no_surat" required value="<?= e($edit['no_surat'] ?? '') ?>"></label><label class="form-field wide">Perihal<input name="perihal" required value="<?= e($edit['perihal'] ?? '') ?>"></label><label class="form-field">Tanggal Surat<input type="date" name="tanggal_surat" required value="<?= e($edit['tanggal_surat'] ?? '') ?>"></label><label class="form-field">Jenis Surat<select name="jenis_surat_id" required><?php foreach ($jenis as $x): ?><option value="<?= (int)$x['jenis_surat_id'] ?>" <?= ((int)($edit['jenis_surat_id'] ?? 0) === (int)$x['jenis_surat_id']) ? 'selected' : '' ?>><?= e($x['nama_jenis']) ?></option><?php endforeach; ?></select></label></div>
+                        <div class="form-grid"><label class="form-field">No. Registrasi<input name="no_registrasi" required value="<?= e($edit['no_registrasi'] ?? '') ?>" <?= $edit ? 'readonly' : '' ?>></label><label class="form-field">No. Surat<input name="no_surat" required value="<?= e($edit['no_surat'] ?? '') ?>"></label><label class="form-field wide">Perihal<input name="perihal" required value="<?= e($edit['perihal'] ?? '') ?>"></label><label class="form-field">Tanggal Surat<input id="tanggal-surat" type="date" name="tanggal_surat" required value="<?= e($edit['tanggal_surat'] ?? '') ?>"></label><label class="form-field">Jenis Surat<select name="jenis_surat_id" required><?php foreach ($jenis as $x): ?><option value="<?= (int)$x['jenis_surat_id'] ?>" <?= ((int)($edit['jenis_surat_id'] ?? 0) === (int)$x['jenis_surat_id']) ? 'selected' : '' ?>><?= e($x['nama_jenis']) ?></option><?php endforeach; ?></select></label></div>
                     </section>
                     <section class="form-section">
                         <div class="form-section-header"><span class="material-symbols-outlined">folder_managed</span>
@@ -1592,7 +1731,7 @@ $items = $statement->fetchAll();
                                 <p>Informasi masa simpan dan tanggal jatuh tempo.</p>
                             </div>
                         </div>
-                        <div class="form-grid"><label class="form-field">Status<select class="status-select status-<?= strtolower((string)($edit['status_arsip'] ?? 'Aktif')) ?>" name="status_arsip"><?php foreach (['Aktif', 'Permanen', 'Musnah'] as $x): ?><option <?= $x === ($edit['status_arsip'] ?? 'Aktif') ? 'selected' : '' ?>><?= $x ?></option><?php endforeach; ?></select></label><label class="form-field">Masa Simpan Tahun<input type="number" min="0" name="masa_simpan_tahun" value="<?= e((string)($edit['masa_simpan_tahun'] ?? '')) ?>"><small>Masukkan jumlah tahun sesuai ketentuan.</small></label><label class="form-field">Mulai Retensi<input type="date" name="tanggal_mulai_retensi" value="<?= e($edit['tanggal_mulai_retensi'] ?? '') ?>"></label><label class="form-field">Jatuh Tempo<input type="date" name="tanggal_jatuh_tempo" value="<?= e($edit['tanggal_jatuh_tempo'] ?? '') ?>"></label></div>
+                        <div class="form-grid"><label class="form-field">Status<select class="status-select status-<?= strtolower((string)($edit['status_arsip'] ?? 'Inaktif')) ?>" name="status_arsip"><?php foreach (['Inaktif', 'Permanen', 'Musnah'] as $x): ?><option <?= $x === ($edit['status_arsip'] ?? 'Inaktif') ? 'selected' : '' ?>><?= $x ?></option><?php endforeach; ?></select></label><label class="form-field">Masa Simpan Tahun<input id="masa-simpan-tahun" type="number" min="1" max="10" name="masa_simpan_tahun" value="<?= e((string)($edit['masa_simpan_tahun'] ?? '')) ?>"><small>Masukkan jumlah tahun sesuai ketentuan.</small></label><label class="form-field">Jatuh Tempo<input id="tanggal-jatuh-tempo" type="date" name="tanggal_jatuh_tempo" value="<?= e($edit['tanggal_jatuh_tempo'] ?? '') ?>"></label></div>
                     </section>
                     <section class="form-section detail-section">
                         <div class="form-section-header"><span class="material-symbols-outlined">notes</span>
@@ -1601,7 +1740,7 @@ $items = $statement->fetchAll();
                                 <p>Tambahkan informasi pendukung jika diperlukan.</p>
                             </div>
                         </div>
-                        <div class="form-grid"><label class="form-field wide">Detail<textarea name="detail_arsip"><?= e($edit['detail_arsip'] ?? '') ?></textarea></label><label class="form-field wide">Keterangan<textarea name="keterangan"><?= e($edit['keterangan'] ?? '') ?></textarea></label><?php if (!$edit): ?><label class="form-field wide">Dokumen Arsip / Upload File<input type="file" name="document" accept=".pdf,.jpg,.jpeg,.png" data-file-name="document-name"><small id="document-name">Opsional. PDF, JPG, JPEG, atau PNG maksimal 20 MB.</small></label><?php endif; ?></div>
+                        <div class="form-grid"><label class="form-field wide">Detail<textarea name="detail_arsip"><?= e($edit['detail_arsip'] ?? '') ?></textarea></label><label class="form-field wide">Keterangan<textarea name="keterangan"><?= e($edit['keterangan'] ?? '') ?></textarea></label><?php if (!$edit): ?><div class="form-field wide archive-upload"><span>Dokumen Arsip / Upload File</span><div class="archive-upload-area"><span class="archive-upload-icon"><span class="material-symbols-outlined">upload_file</span></span><span class="archive-upload-title">Pilih dokumen untuk diunggah</span><span class="archive-upload-text">PDF, JPG, JPEG, PNG, XLS, XLSX · Maks. 20 MB</span><input class="archive-upload-input" id="archive-document" type="file" name="document" accept=".pdf,.jpg,.jpeg,.png,.xls,.xlsx"><label class="archive-upload-button" for="archive-document"><span class="material-symbols-outlined">upload</span>Pilih File</label></div><div class="archive-upload-file" id="document-file" hidden><span class="material-symbols-outlined">description</span><span class="archive-upload-file-details"><span class="archive-upload-file-name" id="document-name"></span><small class="archive-upload-file-size" id="document-size"></small></span></div><small class="archive-upload-helper">Opsional · PDF, JPG, JPEG, PNG, XLS, atau XLSX · Maks. 20 MB</small></div><?php endif; ?></div>
                     </section>
                     <div class="actions form-actions"><button class="button"><span class="material-symbols-outlined">save</span><?= $edit ? 'Simpan Perubahan' : 'Simpan Arsip' ?></button><?php if ($edit): ?><a class="button secondary" href="arsip.php"><span class="material-symbols-outlined">close</span>Batal</a><?php endif; ?></div>
                 </form><?php if ($edit): ?><div class="document-subsection">
@@ -1611,7 +1750,7 @@ $items = $statement->fetchAll();
                                 <p>Tambahkan dokumen pendukung arsip.</p>
                             </div>
                         </div>
-                        <form method="post" action="../../actions/upload-arsip.php" enctype="multipart/form-data" class="document-upload"><input type="hidden" name="csrf_token" value="<?= e(csrfToken()) ?>"><input type="hidden" name="arsip_id" value="<?= (int)$edit['arsip_id'] ?>"><label class="wide">Pilih File<input type="file" name="document" accept=".pdf,.jpg,.jpeg,.png" required></label>
+                        <form method="post" action="../../actions/upload-arsip.php" enctype="multipart/form-data" class="document-upload"><input type="hidden" name="csrf_token" value="<?= e(csrfToken()) ?>"><input type="hidden" name="arsip_id" value="<?= (int)$edit['arsip_id'] ?>"><label class="wide">Pilih File<input type="file" name="document" accept=".pdf,.jpg,.jpeg,.png,.xls,.xlsx" required></label>
                             <div class="actions"><button class="button">Upload</button><a class="button secondary" href="../../api/arsip-detail.php?id=<?= (int)$edit['arsip_id'] ?>">Detail</a></div>
                         </form>
                     </div><?php endif; ?>
@@ -1644,7 +1783,7 @@ $items = $statement->fetchAll();
                                     <td><?= e($x['nama_jenis']) ?></td>
                                     <td><?= e($x['nama_klasifikasi'] ?? '-') ?></td>
                                     <td><?= e($x['tanggal_surat']) ?></td>
-                                    <td><?php $statusClass = ['Aktif' => 'aktif', 'Permanen' => 'permanen', 'Musnah' => 'musnah', 'Dalam Retensi' => 'retensi'][$x['status_arsip']] ?? ''; ?><span class="archive-status-badge<?= $statusClass !== '' ? ' status-' . $statusClass : '' ?>"><?= e($x['status_arsip']) ?></span></td>
+                                    <td><?php $statusClass = ['Inaktif' => 'aktif', 'Permanen' => 'permanen', 'Musnah' => 'musnah', 'Dalam Retensi' => 'retensi'][$x['status_arsip']] ?? ''; ?><span class="archive-status-badge<?= $statusClass !== '' ? ' status-' . $statusClass : '' ?>"><?= e($x['status_arsip']) ?></span></td>
                                     <td><a href="arsip.php?edit=<?= (int)$x['arsip_id'] ?>">Edit</a> · <a href="../../api/arsip-detail.php?id=<?= (int)$x['arsip_id'] ?>">Detail</a></td>
                                 </tr><?php endforeach; ?><?php if (!$items): ?><tr>
                                     <td colspan="8" class="empty-state"><span class="material-symbols-outlined">inventory_2</span><strong>Belum ada arsip digital</strong>Arsip yang sesuai pencarian atau filter akan tampil di sini.</td>
@@ -1775,14 +1914,32 @@ $items = $statement->fetchAll();
         }
     </style>
     <script>
-        const archiveForm = document.querySelector('form[method="post"]'),
+        const archiveForm = document.querySelector('#form-arsip form[method="post"]'),
             archiveModal = document.getElementById('archive-confirm-modal'),
             archiveCancel = archiveModal.querySelector('.archive-confirm-cancel'),
             archiveSubmit = archiveModal.querySelector('.archive-confirm-submit');
-        const documentInput = document.querySelector('[name="document"]'), documentName = document.getElementById('document-name');
-        if (documentInput && documentName) documentInput.addEventListener('change', function() {
-            documentName.textContent = this.files[0] ? this.files[0].name : 'Opsional. PDF, JPG, JPEG, atau PNG maksimal 20 MB.'
+        const documentInput = document.getElementById('archive-document'), documentFile = document.getElementById('document-file'), documentName = document.getElementById('document-name'), documentSize = document.getElementById('document-size');
+        if (documentInput && documentFile && documentName && documentSize) documentInput.addEventListener('change', function() {
+            const file = this.files[0];
+            documentFile.hidden = !file;
+            if (!file) return;
+            documentName.textContent = file.name;
+            documentSize.textContent = file.size >= 1024 * 1024 ? `${(file.size / 1024 / 1024).toFixed(1)} MB` : `${Math.max(1, Math.round(file.size / 1024))} KB`
         });
+        const tanggalSurat = document.getElementById('tanggal-surat'), masaSimpanTahun = document.getElementById('masa-simpan-tahun'), tanggalJatuhTempo = document.getElementById('tanggal-jatuh-tempo'), statusArsip = archiveForm?.querySelector('[name="status_arsip"]');
+        function isiTanggalJatuhTempo() {
+            const years = Number(masaSimpanTahun?.value);
+            if (!tanggalSurat?.value || statusArsip?.value !== 'Inaktif' || !Number.isInteger(years) || years < 1 || years > 10) {
+                if (tanggalJatuhTempo && (!statusArsip?.value || statusArsip.value === 'Inaktif')) tanggalJatuhTempo.value = '';
+                return;
+            }
+            const [year, month, day] = tanggalSurat.value.split('-').map(Number), due = new Date(year + years, month - 1, day);
+            if (due.getMonth() !== month - 1) due.setDate(0);
+            tanggalJatuhTempo.value = `${due.getFullYear()}-${String(due.getMonth() + 1).padStart(2, '0')}-${String(due.getDate()).padStart(2, '0')}`;
+        }
+        [tanggalSurat, masaSimpanTahun, statusArsip].forEach(input => input?.addEventListener('input', isiTanggalJatuhTempo));
+        [tanggalSurat, masaSimpanTahun, statusArsip].forEach(input => input?.addEventListener('change', isiTanggalJatuhTempo));
+        isiTanggalJatuhTempo();
         let archiveConfirmed = false;
         if (archiveForm) {
             archiveForm.addEventListener('submit', function(event) {

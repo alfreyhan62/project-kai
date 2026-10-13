@@ -24,7 +24,7 @@ if ($role === 2) {
     $params['unit_scope'] = $unit;
 }
 
-$summarySql = 'SELECT COUNT(*) AS total, COALESCE(SUM(v.tanggal_jatuh_tempo > CURDATE() AND v.tanggal_jatuh_tempo <= DATE_ADD(CURDATE(), INTERVAL 7 DAY)), 0) AS segera, COALESCE(SUM(YEAR(v.tanggal_jatuh_tempo) = YEAR(CURDATE()) AND MONTH(v.tanggal_jatuh_tempo) = MONTH(CURDATE())), 0) AS bulan_ini, COALESCE(SUM(YEAR(v.tanggal_jatuh_tempo) = YEAR(CURDATE())), 0) AS tahun_ini ' . $baseSql;
+$summarySql = "SELECT COUNT(*) AS total, SUM(v.tanggal_jatuh_tempo > CURRENT_DATE AND v.tanggal_jatuh_tempo <= DATE_ADD(CURDATE(), INTERVAL 7 DAY)) AS segera, SUM(YEAR(v.tanggal_jatuh_tempo) = YEAR(CURDATE()) AND MONTH(v.tanggal_jatuh_tempo) = MONTH(CURDATE())) AS bulan_ini, SUM(YEAR(v.tanggal_jatuh_tempo) = YEAR(CURDATE())) AS tahun_ini " . $baseSql;
 $listSql = 'SELECT v.* ' . $baseSql . ' ORDER BY v.tanggal_jatuh_tempo ASC';
 
 $summaryStmt = $pdo->prepare($summarySql);
@@ -74,7 +74,7 @@ function schedule_indicator(?string $date): array
 </head>
 <body class="dashboard-body destruction-schedule<?= $isPetugas ? ' with-petugas-sidebar' : '' ?>">
 <?php if ($isPetugas): ?><aside class="petugas-sidebar"><div class="petugas-brand"><span class="petugas-logo"><img src="../../assets/images/logofix.png" alt="KAI"></span><div><b>e-ARSIP</b><small>KAI DIVRE III</small><span>Web Pengarsipan Digital</span></div></div><nav><p>Menu Utama</p><a class="petugas-menu" href="../petugas/dashboard.php"><i class="material-symbols-outlined">dashboard</i>Dashboard</a><a class="petugas-menu" href="../petugas/arsip.php"><i class="material-symbols-outlined">folder_open</i>Arsip Digital</a><a class="petugas-menu active" href="jadwal-pemusnahan.php"><i class="material-symbols-outlined">event</i>Jadwal Pemusnahan</a></nav><section class="petugas-access"><i class="material-symbols-outlined">verified_user</i><b>Akses Petugas</b><span>Anda login sebagai Petugas.</span><span>Kelola arsip sesuai unit kerja Anda.</span><small>Unit scoped</small></section></aside><?php endif; ?>
-<header class="schedule-header"><details class="user-menu"><summary><span class="user-avatar"><?= profileAvatar('../..', $profileName) ?></span><span class="user-copy"><b><?= e($profileName) ?></b><small><?= e($profileRole) ?></small></span><i class="material-symbols-outlined">expand_more</i></summary><div class="user-dropdown"><div class="user-dropdown-header"><b><?= e($profileName) ?></b><small><?= e($profileRole) ?></small></div><a href="../profile/ubah-profil.php"><i class="material-symbols-outlined">person</i>Ubah Profil</a><a href="../profile/ubah-password.php"><i class="material-symbols-outlined">key</i>Ubah Password</a><a href="../../logout.php"><i class="material-symbols-outlined">logout</i>Logout</a></div></details></header>
+<header class="schedule-header"><details class="user-menu"><summary><span class="user-avatar"><?= profileAvatar('../..', $profileName) ?></span><span class="user-copy"><b><?= e($profileName) ?></b><small><?= e($profileRole) ?></small></span><i class="material-symbols-outlined">expand_more</i></summary><div class="user-dropdown"><div class="user-dropdown-header"><b><?= e($profileName) ?></b><small><?= e($profileRole) ?></small></div><a href="../profile/ubah-profil.php"><i class="material-symbols-outlined">person</i>Ubah Profil</a><a href="../profile/ubah-password.php"><i class="material-symbols-outlined">key</i>Ubah Password</a><?= logoutForm('../../logout.php') ?></div></details></header>
 <main class="admin-content schedule-page">
     <section class="schedule-hero panel">
         <div>

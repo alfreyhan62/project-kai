@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($password !== $passwordConfirmation) $errors[] = 'Konfirmasi password baru tidak sesuai.';
 
         if (!$errors) {
-            $statement = $pdo->prepare('UPDATE users SET password_hash = :password_hash, password_changed_at = NOW() WHERE user_id = :user_id AND role_id = :role_id AND is_active = 1');
+            $statement = $pdo->prepare('UPDATE users SET password_hash = :password_hash, password_changed_at = NOW() WHERE user_id = :user_id AND role_id = :role_id AND is_active = TRUE');
             $statement->execute(['password_hash' => password_hash($password, PASSWORD_DEFAULT), 'user_id' => $userId, 'role_id' => $roleId]);
             $notice = 'Password berhasil diubah.';
         }

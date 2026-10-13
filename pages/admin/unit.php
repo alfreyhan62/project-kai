@@ -27,25 +27,16 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
             }
         }
         if (in_array($action, ['create', 'update'], true)) {
-            $values = [
-                'kode_unit' => trim((string) ($_POST['kode_unit'] ?? '')),
-                'nama_unit' => trim((string) ($_POST['nama_unit'] ?? '')),
-                'parent_id' => ($_POST['parent_id'] ?? '') === '' ? null : (int) $_POST['parent_id'],
-                'keterangan' => trim((string) ($_POST['keterangan'] ?? '')),
-            ];
-            if ($values['kode_unit'] === '' || $values['nama_unit'] === '') $errors[] = 'Kode dan nama unit wajib diisi.';
-            if ($values['parent_id'] !== null && $values['parent_id'] === $unitId) $errors[] = 'Unit tidak dapat menjadi induk dirinya sendiri.';
-            $exists = $pdo->prepare('SELECT unit_id FROM unit_kerja WHERE kode_unit = :kode AND unit_id != :id');
-            $exists->execute(['kode' => $values['kode_unit'], 'id' => $unitId]);
-            if ($exists->fetch()) $errors[] = 'Kode unit sudah digunakan.';
+            $namaUnit = trim((string) ($_POST['nama_unit'] ?? ''));
+            if ($namaUnit === '') $errors[] = 'Nama unit wajib diisi.';
             if (!$errors && $action === 'create') {
-                $statement = $pdo->prepare('INSERT INTO unit_kerja (kode_unit, nama_unit, parent_id, keterangan) VALUES (:kode_unit, :nama_unit, :parent_id, :keterangan)');
-                $statement->execute($values);
+                $statement = $pdo->prepare('INSERT INTO unit_kerja (kode_unit, nama_unit) VALUES (:kode_unit, :nama_unit)');
+                $statement->execute(['kode_unit' => 'UNIT-' . strtoupper(bin2hex(random_bytes(6))), 'nama_unit' => $namaUnit]);
                 $notice = 'Unit kerja berhasil ditambahkan.';
             }
             if (!$errors && $action === 'update' && $unitId > 0) {
-                $statement = $pdo->prepare('UPDATE unit_kerja SET kode_unit = :kode_unit, nama_unit = :nama_unit, parent_id = :parent_id, keterangan = :keterangan WHERE unit_id = :id');
-                $statement->execute($values + ['id' => $unitId]);
+                $statement = $pdo->prepare('UPDATE unit_kerja SET nama_unit = :nama_unit WHERE unit_id = :id');
+                $statement->execute(['nama_unit' => $namaUnit, 'id' => $unitId]);
                 $notice = 'Unit kerja berhasil diperbarui.';
             }
         }
@@ -53,14 +44,14 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
 }
 
 if (isset($_GET['edit'])) {
-    $statement = $pdo->prepare('SELECT unit_id, kode_unit, nama_unit, parent_id, keterangan FROM unit_kerja WHERE unit_id = :id');
+    $statement = $pdo->prepare('SELECT unit_id, nama_unit FROM unit_kerja WHERE unit_id = :id');
     $statement->execute(['id' => (int) $_GET['edit']]);
     $editUnit = $statement->fetch() ?: null;
 }
 
 $parents = $pdo->query('SELECT unit_id, kode_unit, nama_unit FROM unit_kerja ORDER BY nama_unit')->fetchAll();
 $query = trim((string) ($_GET['q'] ?? ''));
-$sql = 'SELECT u.unit_id, u.kode_unit, u.nama_unit, u.parent_id, u.keterangan, p.nama_unit AS parent_name, (SELECT COUNT(*) FROM ruangan r WHERE r.unit_id = u.unit_id) AS room_count, (SELECT COUNT(*) FROM users x WHERE x.unit_id = u.unit_id) AS user_count FROM unit_kerja u LEFT JOIN unit_kerja p ON p.unit_id = u.parent_id WHERE u.kode_unit LIKE :kode_query OR u.nama_unit LIKE :nama_query ORDER BY u.nama_unit';
+$sql = 'SELECT nama_unit FROM unit_kerja WHERE kode_unit LIKE :kode_query OR nama_unit LIKE :nama_query ORDER BY nama_unit';
 $statement = $pdo->prepare($sql);
 $statement->execute(['kode_query' => "%{$query}%", 'nama_query' => "%{$query}%"]);
 $units = $statement->fetchAll();
@@ -94,7 +85,7 @@ $units = $statement->fetchAll();
             <details class="user-menu">
                 <summary><span class="user-avatar"><?= profileAvatar('../..', (string) ($_SESSION['nama_lengkap'] ?? $_SESSION['username'] ?? 'User')) ?></span><span class="user-summary-text"><b><?= e((string)($_SESSION['nama_lengkap'] ?? $_SESSION['username'] ?? 'User')) ?></b><small><?= e((string)($_SESSION['role_name'] ?? 'Admin')) ?></small></span><i class="user-summary-chevron material-symbols-outlined">expand_more</i></summary>
                 <div class="user-dropdown">
-                    <div class="user-dropdown-header"><b><?= e((string)($_SESSION['nama_lengkap'] ?? $_SESSION['username'] ?? 'User')) ?></b><small><?= e((string)($_SESSION['role_name'] ?? 'Admin')) ?></small></div><a href="../profile/ubah-profil.php"><i class="material-symbols-outlined">person</i>Ubah Profil</a><a href="../profile/ubah-password.php"><i class="material-symbols-outlined">key</i>Ubah Password</a><a href="../../logout.php"><i class="material-symbols-outlined">logout</i>Logout</a>
+                    <div class="user-dropdown-header"><b><?= e((string)($_SESSION['nama_lengkap'] ?? $_SESSION['username'] ?? 'User')) ?></b><small><?= e((string)($_SESSION['role_name'] ?? 'Admin')) ?></small></div><a href="../profile/ubah-profil.php"><i class="material-symbols-outlined">person</i>Ubah Profil</a><a href="../profile/ubah-password.php"><i class="material-symbols-outlined">key</i>Ubah Password</a><?= logoutForm('../../logout.php') ?>
                 </div>
             </details>
         </header>
@@ -102,9 +93,7 @@ $units = $statement->fetchAll();
             <?php if ($notice): ?><p class="notice"><?= e($notice) ?></p><?php endif; ?><?php if ($errors): ?><div class="alert"><?php foreach ($errors as $error): ?><div><?= e($error) ?></div><?php endforeach; ?></div><?php endif; ?>
             <section class="panel master-form">
                 <h2><?= $editUnit ? 'Edit Unit Kerja' : 'Tambah Unit Kerja' ?></h2>
-                <form method="post" class="admin-form"><input type="hidden" name="csrf_token" value="<?= e(csrfToken()) ?>"><input type="hidden" name="action" value="<?= $editUnit ? 'update' : 'create' ?>"><?php if ($editUnit): ?><input type="hidden" name="unit_id" value="<?= (int) $editUnit['unit_id'] ?>"><?php endif; ?><label>Kode Unit<input name="kode_unit" maxlength="30" required value="<?= e($editUnit['kode_unit'] ?? '') ?>"></label><label>Nama Unit<input name="nama_unit" maxlength="150" required value="<?= e($editUnit['nama_unit'] ?? '') ?>"></label><label>Unit Induk<select name="parent_id">
-                            <option value="">Tidak ada</option><?php foreach ($parents as $parent): if ($editUnit && (int) $parent['unit_id'] === (int) $editUnit['unit_id']) continue; ?><option value="<?= (int) $parent['unit_id'] ?>" <?= (int) ($editUnit['parent_id'] ?? 0) === (int) $parent['unit_id'] ? 'selected' : '' ?>><?= e($parent['kode_unit'] . ' - ' . $parent['nama_unit']) ?></option><?php endforeach; ?>
-                        </select></label><label>Keterangan<textarea name="keterangan" maxlength="255"><?= e($editUnit['keterangan'] ?? '') ?></textarea></label>
+                <form method="post" class="admin-form"><input type="hidden" name="csrf_token" value="<?= e(csrfToken()) ?>"><input type="hidden" name="action" value="<?= $editUnit ? 'update' : 'create' ?>"><?php if ($editUnit): ?><input type="hidden" name="unit_id" value="<?= (int) $editUnit['unit_id'] ?>"><?php endif; ?><label>Nama Unit<input name="nama_unit" maxlength="150" required value="<?= e($editUnit['nama_unit'] ?? '') ?>"></label>
                     <div><button class="primary-button" type="submit"><?= $editUnit ? 'Simpan Perubahan' : 'Tambah Unit' ?></button><?php if ($editUnit): ?><a href="unit.php">Batal</a><?php endif; ?></div>
                 </form>
             </section>
@@ -115,25 +104,11 @@ $units = $statement->fetchAll();
                     <table>
                         <thead>
                             <tr>
-                                <th>Kode</th>
                                 <th>Nama Unit</th>
-                                <th>Unit Induk</th>
-                                <th>Ruangan</th>
-                                <th>Pengguna</th>
-                                <th>Keterangan</th>
-                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody><?php foreach ($units as $unit): ?><tr>
-                                    <td><?= e($unit['kode_unit']) ?></td>
                                     <td><?= e($unit['nama_unit']) ?></td>
-                                    <td><?= e($unit['parent_name'] ?? '-') ?></td>
-                                    <td><?= (int) $unit['room_count'] ?></td>
-                                    <td><?= (int) $unit['user_count'] ?></td>
-                                    <td><?= e($unit['keterangan'] ?? '-') ?></td>
-                                    <td><a href="unit.php?edit=<?= (int) $unit['unit_id'] ?>">Edit</a>
-                                        <form method="post" class="inline-form"><input type="hidden" name="csrf_token" value="<?= e(csrfToken()) ?>"><input type="hidden" name="action" value="delete"><input type="hidden" name="unit_id" value="<?= (int) $unit['unit_id'] ?>"><button type="submit">Hapus</button></form>
-                                    </td>
                                 </tr><?php endforeach; ?></tbody>
                     </table>
                 </div>

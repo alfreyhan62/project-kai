@@ -7,7 +7,10 @@ require_once dirname(__DIR__, 2) . '/includes/archive.php';
 requireVisitor();
 
 $errors = [];
-$units = $pdo->query('SELECT unit_id, nama_unit FROM unit_kerja ORDER BY nama_unit')->fetchAll();
+$visitorUnit = $pdo->prepare('SELECT uk.unit_id, uk.nama_unit FROM users u INNER JOIN unit_kerja uk ON uk.unit_id = u.unit_id WHERE u.user_id = :user_id AND u.role_id = :role_id AND u.is_active = TRUE');
+$visitorUnit->execute(['user_id' => (int) $_SESSION['user_id'], 'role_id' => (int) $_SESSION['role_id']]);
+$visitorUnit = $visitorUnit->fetch() ?: null;
+$units = $visitorUnit ? [$visitorUnit] : [];
 $spkStatuses = ['Draft', 'Aktif', 'Selesai', 'Dibatalkan'];
 $defaultJenisSuratId = (int) $pdo->query('SELECT jenis_surat_id FROM jenis_surat ORDER BY jenis_surat_id LIMIT 1')->fetchColumn();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -16,11 +19,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $mulai = (string) ($_POST['tanggal_mulai_pekerjaan'] ?? '');
     $selesai = (string) ($_POST['tanggal_selesai_pekerjaan'] ?? '');
     $jangkaWaktu = preg_match('/^\d{4}-\d{2}-\d{2}$/', $mulai) && preg_match('/^\d{4}-\d{2}-\d{2}$/', $selesai) ? (new DateTimeImmutable($mulai))->diff(new DateTimeImmutable($selesai))->days + 1 : null;
-    $data = ['unit_id' => (int) ($_POST['penanggung_jawab_unit_id'] ?? 0), 'no_registrasi' => '', 'no_surat' => '', 'perihal' => '', 'tanggal_surat' => '', 'jenis_surat_id' => $defaultJenisSuratId, 'klasifikasi_id' => null, 'detail_arsip' => null, 'keterangan' => null, 'nomor_spk' => trim((string) ($_POST['nomor_spk'] ?? '')), 'tanggal_spk' => (string) ($_POST['tanggal_spk'] ?? ''), 'vendor' => trim((string) ($_POST['vendor'] ?? '')), 'nama_pekerjaan' => trim((string) ($_POST['nama_pekerjaan'] ?? '')), 'nilai_spk' => $nilaiSpk === '' ? null : (int) $nilaiSpk, 'kategori_nilai' => $nilaiSpk !== '' && (int) $nilaiSpk > 500000000 ? '> Rp500 Juta' : '≤ Rp500 Juta', 'tanggal_mulai_pekerjaan' => $mulai, 'tanggal_selesai_pekerjaan' => $selesai, 'jangka_waktu' => $jangkaWaktu, 'penanggung_jawab_unit_id' => (int) ($_POST['penanggung_jawab_unit_id'] ?? 0), 'status_spk' => (string) ($_POST['status_spk'] ?? '')];
+    $unitId = (int) ($visitorUnit['unit_id'] ?? 0);
+    $data = ['unit_id' => $unitId, 'no_registrasi' => '', 'no_surat' => '', 'perihal' => '', 'tanggal_surat' => '', 'jenis_surat_id' => $defaultJenisSuratId, 'klasifikasi_id' => null, 'detail_arsip' => null, 'keterangan' => null, 'nomor_spk' => trim((string) ($_POST['nomor_spk'] ?? '')), 'tanggal_spk' => (string) ($_POST['tanggal_spk'] ?? ''), 'vendor' => trim((string) ($_POST['vendor'] ?? '')), 'nama_pekerjaan' => trim((string) ($_POST['nama_pekerjaan'] ?? '')), 'nilai_spk' => $nilaiSpk === '' ? null : (int) $nilaiSpk, 'kategori_nilai' => $nilaiSpk !== '' && (int) $nilaiSpk > 500000000 ? '> Rp500 Juta' : '≤ Rp500 Juta', 'tanggal_mulai_pekerjaan' => $mulai, 'tanggal_selesai_pekerjaan' => $selesai, 'jangka_waktu' => $jangkaWaktu, 'penanggung_jawab_unit_id' => $unitId, 'status_spk' => (string) ($_POST['status_spk'] ?? '')];
     $data['no_registrasi'] = 'SPK-' . $data['nomor_spk'];
     $data['no_surat'] = $data['nomor_spk'];
     $data['perihal'] = $data['nama_pekerjaan'];
     $data['tanggal_surat'] = $data['tanggal_spk'];
+    if (!$visitorUnit) $errors[] = 'Akun Visitor belum terhubung ke unit kerja.';
     if (!$data['jenis_surat_id']) $errors[] = 'Jenis surat default belum tersedia. Hubungi administrator.';
     if ($data['nomor_spk'] === '' || !preg_match('/^\d{4}-\d{2}-\d{2}$/', $data['tanggal_spk']) || $data['vendor'] === '' || $data['nama_pekerjaan'] === '' || $data['nilai_spk'] === null || $data['nilai_spk'] <= 0 || !preg_match('/^\d{4}-\d{2}-\d{2}$/', $mulai) || !preg_match('/^\d{4}-\d{2}-\d{2}$/', $selesai) || !$data['penanggung_jawab_unit_id'] || !in_array($data['status_spk'], $spkStatuses, true)) $errors[] = 'Field wajib Data SPK belum lengkap atau tidak valid.';
     if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $mulai) && preg_match('/^\d{4}-\d{2}-\d{2}$/', $selesai) && $selesai < $mulai) $errors[] = 'Tanggal selesai pekerjaan tidak boleh lebih awal dari tanggal mulai.';
@@ -39,7 +44,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $absolute = dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $relative);
         if (!move_uploaded_file($file['tmp_name'], $absolute)) $errors[] = 'File gagal disimpan.';
         if (!$errors) { $pdo->beginTransaction(); try {
-            $pdo->prepare('INSERT INTO arsip(unit_id,jenis_surat_id,klasifikasi_id,no_registrasi,no_surat,perihal,tanggal_surat,status_arsip,detail_arsip,keterangan,created_by,nomor_spk,tanggal_spk,vendor,nama_pekerjaan,nilai_spk,kategori_nilai,tanggal_mulai_pekerjaan,tanggal_selesai_pekerjaan,jangka_waktu,penanggung_jawab_unit_id,status_spk) VALUES(:unit_id,:jenis_surat_id,:klasifikasi_id,:no_registrasi,:no_surat,:perihal,:tanggal_surat,\'Aktif\',:detail_arsip,:keterangan,:created_by,:nomor_spk,:tanggal_spk,:vendor,:nama_pekerjaan,:nilai_spk,:kategori_nilai,:tanggal_mulai_pekerjaan,:tanggal_selesai_pekerjaan,:jangka_waktu,:penanggung_jawab_unit_id,:status_spk)')->execute($data + ['created_by' => (int) $_SESSION['user_id']]);
+            $statement = $pdo->prepare('INSERT INTO arsip(unit_id,jenis_surat_id,klasifikasi_id,no_registrasi,no_surat,perihal,tanggal_surat,status_arsip,detail_arsip,keterangan,created_by,nomor_spk,tanggal_spk,vendor,nama_pekerjaan,nilai_spk,kategori_nilai,tanggal_mulai_pekerjaan,tanggal_selesai_pekerjaan,jangka_waktu,penanggung_jawab_unit_id,status_spk) VALUES(:unit_id,:jenis_surat_id,:klasifikasi_id,:no_registrasi,:no_surat,:perihal,:tanggal_surat,\'Inaktif\',:detail_arsip,:keterangan,:created_by,:nomor_spk,:tanggal_spk,:vendor,:nama_pekerjaan,:nilai_spk,:kategori_nilai,:tanggal_mulai_pekerjaan,:tanggal_selesai_pekerjaan,:jangka_waktu,:penanggung_jawab_unit_id,:status_spk)');
+            $statement->execute($data + ['created_by' => (int) $_SESSION['user_id']]);
             $arsipId = (int) $pdo->lastInsertId();
             $pdo->prepare('INSERT INTO file_arsip(arsip_id,nama_file,path_file,ekstensi,mime_type,ukuran_file,checksum,is_primary,uploaded_by) VALUES(:arsip_id,:nama_file,:path_file,:ekstensi,:mime_type,:ukuran_file,:checksum,1,:uploaded_by)')->execute(['arsip_id' => $arsipId, 'nama_file' => basename((string) $file['name']), 'path_file' => $relative, 'ekstensi' => $extension, 'mime_type' => $mime, 'ukuran_file' => (int) $file['size'], 'checksum' => hash_file('sha256', $absolute), 'uploaded_by' => (int) $_SESSION['user_id']]);
             $pdo->prepare("INSERT INTO riwayat_arsip(arsip_id,user_id,aksi,keterangan) VALUES(:arsip_id,:user_id,'CREATE','Data pokok surat dibuat oleh Visitor')")->execute(['arsip_id' => $arsipId, 'user_id' => (int) $_SESSION['user_id']]);
@@ -86,7 +92,7 @@ $visitorUsername = trim((string) ($_SESSION['username'] ?? '')) ?: 'Visitor';
         <div><b>e-ARSIP KAI DIVRE III</b><small>Web Pengarsipan Digital - Kantor KAI Divre III</small></div>
         <details class="user-menu">
             <summary><span class="user-avatar"><?= profileAvatar('../..', $visitorUsername) ?></span><span class="user-summary-text"><b><?= e($visitorUsername) ?></b><small>Visitor</small></span><i class="user-summary-chevron material-symbols-outlined">expand_more</i></summary>
-            <div class="user-dropdown"><div class="user-dropdown-header"><b><?= e($visitorUsername) ?></b><small>Visitor</small></div><a href="../profile/ubah-profil.php"><i class="material-symbols-outlined">person</i>Ubah Profil</a><a href="../profile/ubah-password.php"><i class="material-symbols-outlined">key</i>Ubah Password</a><a href="../../logout.php"><i class="material-symbols-outlined">logout</i>Logout</a></div>
+            <div class="user-dropdown"><div class="user-dropdown-header"><b><?= e($visitorUsername) ?></b><small>Visitor</small></div><a href="../profile/ubah-profil.php"><i class="material-symbols-outlined">person</i>Ubah Profil</a><a href="../profile/ubah-password.php"><i class="material-symbols-outlined">key</i>Ubah Password</a><?= logoutForm('../../logout.php') ?></div>
         </details>
     </header>
     <main class="visitor-content">

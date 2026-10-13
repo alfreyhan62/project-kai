@@ -62,7 +62,7 @@ function passwordIsExpired(): bool
 {
     global $pdo;
     if (!isset($pdo) || !isLoggedIn()) return false;
-    $statement = $pdo->prepare('SELECT password_changed_at FROM users WHERE user_id = :user_id AND role_id = :role_id AND is_active = 1');
+    $statement = $pdo->prepare('SELECT password_changed_at FROM users WHERE user_id = :user_id AND role_id = :role_id AND is_active = TRUE');
     $statement->execute(['user_id' => (int) $_SESSION['user_id'], 'role_id' => (int) $_SESSION['role_id']]);
     $changedAt = $statement->fetchColumn();
     return !$changedAt || strtotime((string) $changedAt) <= strtotime('-3 months');
@@ -120,6 +120,11 @@ function csrfToken(): string
 function verifyCsrfToken(): bool
 {
     return hash_equals((string) ($_SESSION['csrf_token'] ?? ''), (string) ($_POST['csrf_token'] ?? ''));
+}
+
+function logoutForm(string $action): string
+{
+    return '<form method="post" action="' . e($action) . '" class="logout-form"><input type="hidden" name="csrf_token" value="' . e(csrfToken()) . '"><button type="submit"><i class="material-symbols-outlined">logout</i>Logout</button></form>';
 }
 
 function dashboardUrl(string $roleName): string

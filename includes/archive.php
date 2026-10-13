@@ -31,6 +31,8 @@ function archiveUploadAllowed(string $name, string $mime, int $size): bool
         'jpg' => 'image/jpeg',
         'jpeg' => 'image/jpeg',
         'png' => 'image/png',
+        'xls' => 'application/vnd.ms-excel',
+        'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     ];
     $extension = strtolower(pathinfo($name, PATHINFO_EXTENSION));
     return $size > 0 && $size <= 20971520 && isset($allowedTypes[$extension]) && hash_equals($allowedTypes[$extension], $mime);

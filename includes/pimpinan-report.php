@@ -27,7 +27,7 @@ function pimpinanReportData(PDO $pdo, array $input): array
             $params[$column] = $value;
         }
     }
-    if (in_array($status, ['Aktif', 'Permanen', 'Musnah'], true)) {
+    if (in_array($status, ['Inaktif', 'Permanen', 'Musnah'], true)) {
         $where[] = 'a.status_arsip = :status';
         $params['status'] = $status;
     }

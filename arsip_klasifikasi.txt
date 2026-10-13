@@ -1,0 +1,561 @@
+KB - KOMERSIALISASI KA
+KB.100 - Perencanaan dan Pengembangan Komersialisasi Angkutan dan Non Angkutan
+KB.101 Permintaan Kebutuhan Fasilitas Pendukung dalam Kegiatan Komersialisasi di
+Perusahaan
+KB.102 Pembuatan Desain Rencana Peningkatan Kegiatan Komersialisasi dan Pelayanan
+KB.103 Perizinan dalam Kegiatan Komersialisasi dan Pelayanan
+KB.200 - Pelaksanaan Komersialisasi Angkutan dan Non Angkutan
+KB.201 Proses Rehabilitasi, Perawatan, Perbaikan, Modernisasi, dan Normalisasi yang
+Berhubungan dengan Sistem atau Prosedur yang digunakan dalam Kegiatan
+Komersialisasi
+KB.202 Persyaratan Angkutan baik Penumpang (Tiket, SAP/SAD, KAD, Railcard, dll)
+maupun Barang
+KB.203  Komersialisasi Angkutan Penumpang dan Barang (Tarif dan Angkutan)
+KB.204 Sewa atau KSO Kereta/Gerbong/Space Iklan/On Train TV/Designer Shop yang
+ditangani Unit Komersial
+KB.205 Sewa atau KSO Tanah/Bangunan Dinas/Rumah Dinas/Jalur KA/Sepur
+Simpang/Space Iklan yang Ditangani Unit Komersial
+KB.206 Asuransi dalam Kegiatan Komersialisasi
+KB.207 Pelayanan Terhadap Pelanggan baik Angkutan maupun Non Angkutan
+KB.300 - Pengawasan dan Evaluasi Komersialisasi Angkutan dan Non Angkutan
+KB.301 Pemeriksaan, Pengujian, dan Percobaan Sistem atau Prosedur yang digunakan
+dalam Kegiatan Komersialisasi
+KB.302 Pengawasan Terhadap Pihak Lain yang berhubungan dengan Pelayanan
+Komersialisasi
+KB.303  Saran/Pengaduan Pelayanan dari Pelanggan maupun Stakeholder KA Lainnya
+KT - OPERASIONAL KA
+KT.100 - Penyusunan Program Kebijakan Operasional KA
+KT.101 Perijinan Kegiatan Operasional KA
+KT.102 Kebutuhan Fasilitas dalam Kegiatan Operasional
+KT.103 Nama, Singkatan, Jenis, dan Klasifikasi Stasiun untuk Kegiatan Pengoperasian KA
+KT.200 - Pelaksanaan Operasi KA
+KT.201 Pengoperasian Angkutan Barang
+KT.202 Pengoperasian Angkutan Penumpang
+KT.203 Administrasi yang ada di Stasiun meliputi Kegiatan Kedinasan dan Operasional
+yang Berkaitan dengan Pengoperasian KA dll
+KT.204 Pedoman Perjalanan KA, WAM, Gapeka, dan Malka (Persilangan, Penyusulan,
+Jadwal/Time Table/Route/Formasi) yang Terkait dengan Operasi KA)
+KT.205 Peluncuran dan Pembatalan Perjalanan KA yang Berhubungan dengan
+Pengoperasian KA
+KT.206 Crew yang Ada di KA yang Terkait Langsung dengan Operasional KA
+KT.300 - Evaluasi Operasional KA
+KT.301  Aktifitas/Pengawasan Terhadap Pihak Lain yang Berhubungan dengan
+Operasional KA (Bina Mitra)
+KT.302 Pengaduan/Saran Mengenai Operasional KA
+KT.303 Laporan Gangguan, Kecelakaan, dan PLH yang Terjadi dalam Pengoperasian KA
+KI - PRASARANA KA
+KI.100 - Pengembangan Prasarana KA
+KI.101 Kebutuhan Fasilitas dan Suku Cadang Prasarana
+KI.102 Perizinan dalam Penggunaan Prasarana KA (Izin Pembangunan Jalan Rel,
+Jembatan, Perawatan Sinyal, Telekomunikasi, Listrik Aliran Atas, Stasiun)
+KI.103 Jenis dan Klasifikasi Stasiun yang Berkaitan dengan Bidang Prasarana
+KI.104 Persyaratan Teknis Penggunaan Prasarana KA
+KI.105 Pembuatan Desain Rencana Pemanfaatan Prasarana KA (Perencanaan Perawatan
+dan Pembangunan Jalan Rel, Jembatan, Perawatan Sinyal, Telekomunikasi, Listrik
+Aliran Atas, Stasiun)
+KI.106 Gambar/Konstruksi Bidang Prasarana
+KI.200 - Pemeliharaan dan pembangunan prasarana KA
+KI.201 Semboyan Prasarana
+KI.202 Semboyan/Tanda Lalu Lintas di Jalan Umum
+KI.203 Jenis Mesin/Perkakas yang digunakan Pada Pekerjaan Bidang Prasarana
+KI.204 Material/suku cadang bidang prasarana
+KI.205 Pengoperasian Rehabilitasi, Perawatan, Perbaikan, Modernisasi, Normalisasi,
+bandasi dan Standarisasi Prasarana
+KI.206 Gangguan/Kerusakan Prasarana
+KI.207 Perlintasan (Petugas, Fly Over, Underpass, dll), Jalan Biasa yang Berhubungan
+dengan Jalan Rel KA
+KI.208 Bangunan Resmi/liar Seperti Batas Sungai, Selokan, Got, Pintu Air, Bendungan,
+Pelabuhan, dll
+KI.209 Sistem Pengairan/Sanitasi
+KI.210 Viaduct, Terowongan, Flyover, dan Underpass
+KI.211 Andas Fondasi/Profil/Konstruksi Bidang Prasarana
+KI.212 Pembangkit, Transformasi, Distribusi Listrik, Laa, Instalasi Listrik dan Sistem
+Kelistrikan
+KI.213 Sistem Persinyalan/NX
+KI.214 Alat Komunikasi Seperti Telepon, HT, Fax, Telex, Server, Jaringan, dll
+KI.300 - Evaluasi Prasarana
+KI.301 Bina Mitra
+KI.302 Pemeriksaan, Pengukuran, Pengujian, Kalibrasi dan Sertifikasi Prasarana KA
+(Sertifikat Uji Pertama dan Uji Berkala Jalan Rel, Jembatan, Perawatan Sinyal,
+Telekomunikasi, Listrik Aliran Atas, Stasiun)
+KR - SARANA KA
+KR.100 - Pengembangan Pengoperasian Sarana
+KR.101 Kebutuhan Fasilitas, Material Suku Cadang, Suku Cadang, Komponen, Bahan
+Bakar, Pelumas, dil
+KR.102  Type/Jenis Lok/Kereta/Gerbong
+KR.103 Persyaratan Teknis dalam Penggunaan Sarana
+KR.104 Pembuatan Desain dalam Kegiatan Pekerjaan Sarana KA
+KR.105 Perizinan Pengoperasian Sarana
+KR.106  Gambar/Konstruksi Sarana
+KR.107 Jenis Mesin/Perkakas Sarana
+KR.200 - Pemeliharaan dan Pengoperasian Sarana
+KR.201 Gangguan dan Kerusakan Sarana
+KR.202 Suku Cadang Sarana
+KR.203 Rehabilitasi, Perawatan, Perbaikan, Modernisasi, Normalisasi, Standarisasi,
+Modifikasi dan Penyehatan Sarana
+KR.204 Asuransi Sarana (Lokomotif, Kereta, Gerbong, dll)
+KR.206  Sertifikat/Breveet Sarana
+KR.207 Pengoperasian dan Penggunaan Sarana (Lok/Kereta/Gerbong), Lokrit/Bordesrit
+KR.209 Peralatan Mekanik (HTT, MTT, Kereta Ukur, Crane)
+KR.211  Pemasukan/Penyerahan/Pencabutan/Mutasi/ Penggunaan Sarana
+KR.212 Penomoran Sarana
+KR.213 Bahan Bakar/Pelumas (Jenis, Standar Harga, Pemakaian) Sarana
+KR.300 - Pengawasan dan Evaluasi Sarana
+KR.301 Pemeriksaan, Pengujian, Percobaan, dan Kalibrasi Sarana yang digunakan
+KR.302 Bina Mitra yang ada Dibidang Sarana
+KS - KESELAMATAN, KEAMANAN, DAN HYGIENE KA
+KS.100 - Kebijakan Keselamatan, Keamanan dan Kesehatan Lingkungan Kerja
+KS.101 Persyaratan Teknis/Survai dan Desain yang Terkait dengan
+Keselamatan/Keamanan/Kesehatan Lingkungan Kerja
+KS.102 Sistem, Prosedur, SDM, Penjaminan Mutu dan Alat-Alat Keselamatan dan
+Pengamanan (Taspat) yang Tekait dengan Keselamatan/Keamanan/Kesehatan
+Lingkungan Kerja
+KS.103 Kebutuhan Fasilitas Pendukung Keselamatan/Keamanan/Kesehatan Lingkungan
+Kerja
+KS.104 Perijinan yang Terkait dengan Keselamatan/Keamanan/Kesehatan Lingkungan
+Kerja
+KS.105 Studi Evaluasi Lingkungan/Amdal/Semdal yang Terkait dengan
+Keselamatan/Keamanan/Kesehatan Lingkungan Kerja
+KS.200 - Pelaksanaan Kebijakan Keselamatan, Keamanan dan Kesehatan Lingkungan Kerja
+KS.201 Rehabilitasi/Perawatan/Perbaikan/Modernisasi/ Normalisasi Sistem/Alat
+Keselamatan/Keamanan/Kesehatan Lingkungan Kerja
+KS.202  Pemeriksaan/Pengujian/Percobaan yang Terkait dengan
+Keselamatan/Keamanan/Kesehatan Lingkungan Kerja
+KS.300 - Evaluasi Kebijakan Keselamatan, Keamanan dan Kesehatan Lingkungan Kerja
+KS.301 Bina Mitra (TNI, Polri, Security Service, Rumah Sakit dll) yang Terkait dengan
+Keselamatan/Keamanan/Kesehatan Lingkungan Kerja
+FUNGSI FASILITATIF
+KH - KEPEGAWAIAN
+KH.100 - Pengadaan SDM
+KH.101 Kebutuhan pegawai yang diperlukan oleh perusahaan (Usulan dari unit kerja,
+permintaan formasi, penetapan formasi)
+KH.102 Rekruitmen pegawai (Proses penerimaan, seleksi, dan penetapan kelulusan)
+KH.103 Berkas lamaran yang tidak diterima
+KH.104 Pembinaan karir pegawai (Pola karir, talent mapping, dll)
+KH.200 - Administrasi Pengelolaan Pegawai
+KH.201 Daftar hadir dan cuti seluruh pegawai
+KH.202 Perijinan, dan dispensasi seluruh pegawai
+KH.203 Data Pegawai (laporan pajak penghasilan pribadi, keanggotaan organisasi profesi)
+KH.204 Surat perintah dinas/ surat tugas
+KH.300 - Mutasi Pegawai
+KH.301 Pengangkatan Menjadi Pegawai
+KH.302 Pelantikan dan Serah Terima Jabatan
+KH.303 Kenaikan Pangkat
+KH.304 Pengangkatan dalam Jabatan
+KH.305 Ujian Dinas Seperti Fit And Proper Test, Assesment dll Beserta Sertifikatnya
+KH.306 Penempatan dan Pemindahan Pegawai
+KH.307 Pengunduran Diri Menjadi Pegawai Perusahaan
+KH.308 Pensiun Pegawai, BT, MPP, Daftar Penerima Calon Pensiun (DPCP), dan
+Penyesuaian Gaji Pokok
+KH.309 Pemberhentian dengan Hormat
+KH.310 Pemberhentian Tidak dengan Hormat
+KH.311 Pensiun Janda, Duda, Anak
+KH.312 Pensiun Meninggal Dunia
+KH.313 Penetapan Uang Tunggu dan Uang Muka Pensiun
+KH.314 Laporan Mutasi Keluarga
+a. Surat izin pernikahan/perceraian
+b. Surat penolakan izin pernikahan/perceraian
+c. Surat nikah/cerai
+d. Akte kelahiran anak
+e. Akte keterangan adopsi anak
+f. Surat keterangan meninggal dunia
+KH.400 - Kesejahteraan Pegawai
+KH.401  Penggajian/kenaikan gaji berkala/tunjangan jabatan/daftar gaji
+KH.402 Uang perangsang/insentif/uang lembur
+KH.403  Reward/penghargaan yang diberikan perusahaan kepada pegawai
+KH.404 Koperasi pegawai, BKRKA, bantuan pegawai, dan SPKA
+KH.405 Jaminan kesehatan pegawai, asuransi, Taspen, Jiwasraya
+KH.406 Pembinaan jasmani dan rohani pegawai
+KH.500 - Evaluasi SDM
+KH.501 Peninjauan masa kerja/jabatan pegawai
+KH.502  Impassing/penyesuaian ijasah
+KH.503  DP3/Simak
+KH.504 Pengaduan masalah pegawai
+KH.505 Rehabilitasi pegawai
+KH.506 Hukuman dinas seperti teguran, peringatan, penundaan gaji, dan pangkat
+KH.600 - Berkas Perseorangan Pegawai
+KH.601 SK Cuti/Dispensasi
+KH.602 SK Hukuman Jabatan/Hukuman Disiplin Pegawai
+KH.603 SK Kenaikan Pangkat
+KH.604 SK Pemberhentian sebagai Pegawai
+KH.605 SK Pemberhentian dengan Hormat
+KH.606 SK Pemberhentian tidak dengan Hormat
+KH.607 SK Pemberian Uang Tunggu
+KH.608 SK Penempatan dan Pemindahan Pegawai
+KH.609 SK Pengangkatan dalam Jabatan
+KH.610 SK Pengangkatan Pegawai
+KH.611 SK Pengunduran Diri Menjadi Pegawai Perusahaan
+KH.612 SK Pensiun
+KH.613 SK Pensiun Janda, Duda, Anak
+KH.614 SK Pensiun Meninggal Dunia
+KH.615 SK Perpindahan Antar Instansi
+KH.616 SK Rekruitmen Pegawai
+KH.617 Kontrak Penetapan PKM dan Kelengkapannya
+KH.618 Kontrak Penetapan PKWT dan Kelengkapannya
+KH.619 Berkas perorangan lainnya :
+a. Surat Pernyataan Melaksanakan Tugas/Menduduki Jabatan dan Surat
+Pernyataan Pelantikan
+b. Surat Pernyataan Pengunduran Diri dari Jabatan Organik karena dicalonkan
+sebagai Kepala/Wakil Kepala daerah
+c. Peninjauan masa kerja/jabatan pegawai
+d. Berkas lamaran pegawai yang diterima
+e. Hasil Pengujian Kesehatan
+f. Berita Acara Pemeriksaan
+g. Surat Perbaikan tanggal Tahun Kelahiran
+h. Akta Nikah/Cerai
+i. Akta Kelahiran
+j. Surat Keterangan Mutasi Keluarga
+k. Surat Keterangan Meninggal Dunia
+|. Surat Keterangan Peningkatan Pendidikan
+m. Surat Tugas/Izin Belajar Dalan/Luar Negeri
+n. Surat Izin Bepergian ke Luar Negeri
+O. Ijazah/Sertifikat
+p. Ujian dinas seperti fit and proper Test, assesment dll
+KA - KEPEMILIKAN ASET
+KA.100 - Pengelolaan Aset Non Produksi
+KA.101 Kebutuhan Fasilitas Pendukung yang Berkaitan dengan Kepemilikan Aset Tanah
+dan Bangunan
+KA.102 Persyaratan Teknis dalam Rencana Pengusahaan Aset Tanah dan Bangunan
+KA.103  Survai dan Desain Pengusahaan Aset Tanah dan Bangunan
+KA.104 Perijinan yang Berkaitan dengan Aset
+KA.105 Jenis atau Lokasi Aset
+KA.106 Heritage (Cagar Budaya)
+KA.200 - Pemanfaatan Aset Non Produksi
+KA.201 Rehabilitasi, Perawatan, Perbaikan, Modernisasi, dan Normalisasi Aset Tanah dan
+Bangunan
+KA.202 Penyerahan Tanah atau Bangunan (Pemanfaatan) oleh Pihak Lain Kepada
+Perusahaan
+KA.203 Pembebasan, Penertiban, Pengosongan, Penutupan dan Pembukaan Aset
+Perusahaan
+KA.204 Legalitas Kepemilikan Seperti Grondkaart, Sertifikat, dll
+KA.205 Status Kepemilikan, Batas Tanah, Gedung dan Permasalahan Hukum Aset Seperti
+Sengketa Tanah dil
+KA.300 - Pengawasan dan Evaluasi Aset Non Produksi
+KA.301 Pemeriksaan, Pengujian dan Percobaan Sistem atau Prosedur Kepemilikan Aset
+KA.302 Bina Mitra dan Hubungan dengan Pihak Lain dalam Kegiatan Kepemilikan Aset
+KE - DIKLAT
+KE.100 - Perencanaan Diklat
+KE.101  Pedoman-Pedoman Kediklatan
+KE.102  Kurikulum/Sylabus/Modul Diklat
+KE.103 Permintaan Pengajar, Dosen atau Widyaswara untuk Proses Diklat
+KE.104 Panduan Fasilitator
+KE.105 Ijin Belajar, PKL, Praktek Kerja atau Magang di Diklat
+KE.106  Saran/Rekomendasi Penyelenggaraan Diklat
+KE.107 Akreditasi Lembaga Diklat
+KE.108 Sertifikasi
+KE.200 - Pelaksanaan Diklat
+KE.201 Diklat Fungsional Kereta Api
+KE.202 Diklat Umum (Training, Seminar, Workshop)
+KE.203 Orientasi, Prajabatan dan Penataran
+KE.204 Bea Siswa yang Berprestasi di Perusahaan
+KE.205 Pendidikan Bergelar, Non Gelar, Sertifikasi dan Pelaporannya
+KE.300 - Laporan dan Evaluasi Diklat
+KE.301 Laporan Penyelenggaraan Diklat
+KE.302 Evaluasi Penyelenggaraan Diklat
+KE.303 Evaluasi Alumni Pasca Diklat
+KE.304 Wisuda, Penutupan Diklat dan Pelaporan Serta Pengembalian Siswa Diklat
+KL - HUKUM
+KL.100 - Rancangan Peraturan/Keputusan Perusahaan
+KL.101 Rancangan Peraturan Perusahaan
+KL.102 Rancangan Keputusan Perusahaan
+KL.103 — Rancangan Instruksi/Maklumat/Edaran/Pengumuman
+KL.104 — Rancangan Standar / Pedoman / Prosedur Kerja / Petunjuk Pelaksanaan /
+Petunjuk Teknis / TOR
+KL.200 - Peraturan Perusahaan
+KL.201 Komersialisasi
+KL.202 Operasional
+KL.203 Prasarana
+KL.204 Sarana
+KL.205 Keselamatan, Keamanan, dan Hygiene
+KL.206 Kepegawaian
+KL.207 Kepemilikan Aset
+KL.208 Diklat
+KL.209 Hukum
+KL.210 Kerjasama
+KL.211 Organisasi dan Tata Laksana
+KL.212 Dokumen
+KL.213 Perlengkapan dan Pelelangan
+KL.214 Perencanaan
+KL.215 Pengawasan
+KL.216 Umum
+KL.217 Keuangan
+KL.218 Sistem Informasi
+KL.219 Logistik
+KL.300 - Keputusan Direksi, Pimpinan Unit, Kepala Daerah
+KL.301  Komersialisasi
+KL.302 Operasional
+KL.303 Prasarana
+KL.304 Sarana
+KL.305 Keselamatan, Keamanan, dan Hygiene
+KL.306 Kepegawaian
+KL.307 Kepemilikan Aset
+KL.308 Diklat
+KL.309 Hukum
+KL.310 Kerjasama
+KL.311 Organisasi dan Tata Laksana
+KL.312 Dokumen
+KL.313 Perlengkapan dan Pelelangan
+KL.314 Perencanaan
+KL.315 Pengawasan
+KL.316 Umum
+KL.317 Keuangan
+KL.318 Sistem Informasi
+KL.319 Logistik
+KL.400 - Instruksi/Maklumat/Edaran/Pengumuman
+KL.401 — Instruksi
+KL.402  Maklumat
+KL.403 Edaran
+KL.404 — Edaran Bersama
+KL.405 Pengumuman
+KL.500 - Surat Perintah / Kuasa
+KL.501 Surat Perintah Direksi / Pimpinan Unit / Kepala Daerah
+KL.502 Surat Perintah Pelaksanaan Tugas dan Datasering
+KL.503 Surat Kuasa Direksi / Pimpinan Unit
+KL.504 Surat Pernyataan
+KL.505 Surat Keterangan
+KL.600 - Standar / Pedoman / Prosedur Kerja / Petunjuk Pelaksanaan / Petunjuk Teknis / TOR
+KL.601  Komersialisasi
+KL.602 Operasional
+KL.603 Prasarana
+KL.604 = Sarana
+KL.605 Keselamatan, Keamanan, dan Hygiene
+KL.606 Kepegawaian
+KL.607 Kepemilikan Aset
+KL.608 — Diklat
+KL.609 = Hukum
+KL.610 Kerjasama
+KL.611 Organisasi dan Tata Laksana
+KL.612 Dokumen
+KL.613 Perlengkapan dan Pelelangan
+KL.614 Perencanaan
+KL.615 Pengawasan
+KL.616 Umum
+KL.617 Keuangan
+KL.618 Sistem Informasi
+KL.619 Logistik
+KL.700 - Nota Kesepahaman/MoU/Kontrak/Perjanjian/ Konsesi/Berita Acara
+KL.701 Kontrak Pendapatan
+KL.702 Kontrak Biaya
+KL.703 Piagam Kesepakatan Bersama (Mou)
+KL.704 Akta
+KL.705 Perjanjian Kerjasama
+KL.706  Pengakhiran Perjanjian Kerjasama
+KL.707 Berita Acara Kontrak dan Perikatan
+KL.708  Konsesi
+KL.709 Perijinan
+KL.710 Dispensasi
+KL.711 Lisensi
+KL.712 Rekomendasi
+KL.713 Wewenang
+KL.714 Recognition
+KL.715 Hak Atas Kekayaan Intelektual
+KL.800 - Dokumentasi/Sosialisasi/Bantuan/Konsultasi/ Advokasi Hukum
+KL.801 Undang-Undang, Peraturan Pemerintah, Keputusan Presiden dan Peraturan-
+Peraturan yang Dijadikan Referensi
+KL.802  Sosialisasi/Penyuluhan/Pembinaan Hukum
+KL.803 Bantuan/Konsultasi/Advokasi Hukum
+KL.804 Panggilan Saksi, Sidang dan Laporan Hasil Sidang
+KL.900 - Kasus / Sengketa Hukum
+KL.901 Pidana
+KL.902 Perdata
+KL.903 Tata Usaha Negara
+KL.904 Ketenagakerjaan
+KL.905 Arbitrase
+KL.906 Sengketa Adat
+KJ - KERJASAMA
+KJ.100 - Perencanaan Program Kerja Sama
+KJ.101 Penawaran Kerjasama dengan Perusahaan
+KJ.102 Perijinan Kerja Sama
+KJ.200 - Pelaksanaan Pengawasan dan Evaluasi Program Kerja Sama
+KJ.201 Bidang Manajemen Seperti Keuangan, Kepegawaian dan IT, Pemasaran dan Aset
+K).202 Kerja Sama di Bidang Umum
+KJ.203 Kerja Sama Bidang Prasarana Seperti Jalan, Bangunan dan Sintelis
+KJ.204 Kerja Sama Sarana Seperti Lok dan Kereta
+KJ.205 Kerja Sama di Bidang Keuangan Seperti Sindikasi Pembiayaan, Kmk dll
+KJ.206 Kerja Sama Bidang Operasional KA
+KJ.207 Kerja Sama Bidang Pendidikan
+KJ.208 Kerja Sama Bidang Keamanan dan Keselamatan
+KJ.209 Kerjasama dengan Organisasi Pemerintah atau Non Profit
+KJ.210 Kerjasama dengan Organisasi Bisnis
+KJ.211 Laporan Hasil Kerjasama dengan Perusahaan
+KO - ORGANISASI DAN TATA LAKSANA
+KO.101 Pembentukan
+KO.102  Pengubahan
+KO.103 Pembubaran
+KO.104 Uraian Jabatan dan Tata Laksana
+KO.105 Evaluasi Organisasi
+KO.106 Perangkat Organisasi (Identitas Perusahaan, Logo, Lagu, Visi dan Misi, dll)
+KD - PENGENDALIAN DOKUMEN”
+KD.100 Tata Naskah, Produksi, Reproduksi Dokumen dalam Perusahaan
+KD.101 Penyimpanan dan Pemeliharaan Arsip
+KD.102 Persetujuan Jra
+KD.103 Layanan Dokumen (Penerimaan, Peminjaman, Pengembalian, dan Penggunaan
+Dokumen)
+KD.104 Penyusutan Arsip
+KD.105 Pembinaan Kearsipan (Sosialisasi, Bimbingan, Supervisi, dan Monitoring)
+KD.106 Perpustakaan (Bibliotik/Bahan Pustaka)
+KM - PERLENGKAPAN DAN PELELANGAN
+KM.100 - Proses Pelelangan
+KM.101 Analisa Data (Klasifikasi, Kebutuhan,Penawaran,Harga, Spesifikasi dll) dalam
+Perlengkapan dan Proses Pelelangan Perusahaan
+KM.102 Perizinan dalam Perlengkapan dan Proses Pelelangan Perusahaan
+KM.103 Persyaratan Teknis dalam Perlengkapan dan Proses Pelelangan Perusahaan
+KM.104 Inventarisasi & Standarisasi Barang Bergerak/Tidak Bergerak dalam Perlengkapan
+dan Proses Pelelangan Perusahaan
+KM.105 Penghapusan (Usulan, Persetujuan, Pelaksanaan Penjualan, Penghibahan,
+Pelelangan) dalam Perlengkapan dan Proses Pelelangan Perusahaan
+KM.200 - Kegiatan Penggunaan Perlengkapan dan Proses Pelelangan
+KM.201 Tender, Kontrak yang Terkait dalam Perlengkapan dan Proses Pelelangan
+Perusahaan
+KM.202 Penggunaan Perlengkapan dan Proses Pelelangan Perusahaan
+KM.203 Pergudangan (Distribusi/Penerimaan/Rehabilitasi/Pemeliharaan) dalam
+Perlengkapan dan Proses Pelelangan Perusahaan
+KM.300 - Pengawasan dan Evaluasi Penggunaan Perlengkapan dan Pelelangan
+KM.301  Administrasi/Laporan Kinerja dalam Perlengkapan dan Proses Pelelangan
+Perusahaan
+KM.302 Pembinaan (Klaim/Komplain) dalam Penggunaan Perlengkapan dan Proses
+Pelelangan
+KP - PERENCANAAN PERUSAHAAN
+KP.100 - Kebijakan dan Strategi Perusahaan
+KP.101 Usulan dan Perubahan Rencana Jangka Panjang Perusahaan (Rjpp)
+KP.102 Rencana Jangka Panjang Perusahaan (Rjpp)
+KP.103 Rencana Proyek dengan Pihak Eksternal
+KP.200 - Program Kerja
+KP.201 Usulan Program Kerja Beserta Data Pendukung
+KP.202 Program Kerja Perusahaan
+KP.203 Program Kerja Daerah dan Unit
+KP.300 - Penetapan/Kontrak Management
+KP.301 Kontrak Management / BoD dengan Pemegang Saham
+KP.302 Kontrak Management / BoD dengan Pimpinan Unit/Daerah
+KP.303 Kontrak Management / BoD dengan Anak Perusahaan
+KP.400 - Laporan
+KP.401 Laporan Berkala (termasuk KPI) Unit Kerja/Direktorat
+KP.402 Laporan /Kinerja Tahunan Perusahaan
+KP.403 Laporan Insidental
+KP.500 - Evaluasi Pelaksanaan Program
+KP.501 Evaluasi Pelaksanaan Program Unit Kerja
+KP.502 Evaluasi Pelaksanaan Program Perusahaan
+KP.503 Evaluasi Pelaksanaan Program Insidental
+KC - PENGAWASAN / PEMERIKSAAN
+KC.100 - Rencana Pengawasan/Pemeriksaan
+KC.101 Rencana Strategis Pengawasan/Pemeriksaan
+KC.102 Rencana Tahunan Pengawasan/Pemeriksaan
+KC.200 - Pelaksanaan Pengawasan/Pemeriksaan
+KC.201 Tindak lanjut atas Laporan Hasil Audit (LHA), Laporan Hasil Pemeriksaan (LHP),
+Laporan Hasil Pemeriksaan Operasional (LHPO), Laporan Hasil Evaluasi (LHE),
+Laporan Akuntan (LA), Laporan Auditor Independenn (LAI)
+KC.202 Good Corporate Governance (GCG)
+KC.203  Pengawasan/pemeriksaan/penjaminan mutu kepegawaian
+KC.204  Pengawasan/pemeriksaan/penjaminan mutu sarana
+KC.205  Pengawasan/pemeriksaan/penjaminan mutu prasarana
+KC.206  Pengawasan/pemeriksaan/penjaminan mutu proyek pembangunan
+KC.207  Pengawasan/pemeriksaan/penjaminan mutu keselamatan KA
+KC.208  Pengawasan/pemeriksaan/penjaminan mutu umum/khusus/investigasi
+KC.209  Pengawasan/pemeriksaan/penjaminan mutu operasional KA/PLH
+KC.300 - Laporan pengawasan/pemeriksaan
+KC.301 Hasil pengawasan/pemeriksaan/penjaminan mutu (audit, CO, dll)
+a. Laporan Hasil Audit (LHA), Laporan Hasil Pemeriksaan (LHP), Laporan Hasil
+Pemeriksaan Operasional (LHPO), Laporan Hasil Evaluasi (LHE), Laporan Akuntan
+(LA), Laporan Auditor Independenn (LAI), yang memerlukan tindak lanjut (TL)
+b. Laporan Hasil Audit (LHA), Laporan Hasil Pemeriksaan (LHP), Laporan Hasil
+Pemeriksaan Operasional (LHPO), Laporan Hasil Evaluasi (LHE), Laporan Akuntan
+(LA), Laporan Auditor Independenn (LAI), yang tidak memerlukan tindak lanjut
+(TL)
+c. Laporan Hasil Audit Investigasi (LHAI) yang mengandung unsur Tindak Pidana
+Korupsi (TPK) dan memerlukan tindak lanjut
+d. Laporan Perkembangan Penanganan Surat Pengaduan masyarakat
+e. Laporan Pemutakhiran Data
+f. Laporan Perkembangan Barang Milik Negara
+g. Laporan Kegiatan Pendampingan Penyusunan Laporan Keuangan dan Reviu
+KC.302 Laporan tindak lanjut atas Laporan Hasil Audit (LHA), Laporan Hasil Pemeriksaan
+(LHP), Laporan Hasil Pemeriksaan Operasional (LHPO), Laporan Hasil Evaluasi
+(LHE), Laporan Akuntan (LA), Laporan Auditor Independenn (LAI)
+KG - GENERAL AFFAIR DAN HUMAS
+KG.100 - General Affair
+KG.101 Administrasi Telekomunikasi Perusahaan
+KG.102 Perjalanan Dinas (Passport, Visa, Fiskal, dll)
+KG.103 Administrasi Penggunaan Fasilitas Perusahaan
+KG.104 Risalah/Notulen Rapat
+KG.105 Risalah/Notulen Rapat Direksi/Komisaris
+KG.106 Administrasi Penyediaan Akomodasi
+KG.107 Kendaraan Dinas
+KG.108 Pemeliharaan Gedung/Perkantoran/Lat/Hospitality (Kebersihan)
+KG.109 Pengelolaan Jaringan Listrik, Air, Telepon, Komputer (Perbaikan, Pemeliharaan
+dan Pemasangan)
+KG.110 Pakaian Dinas & Atribut
+KG.111 Kunjungan Kerja/Tamu/Survey
+KG.112 Upacara Kedinasan
+KG.113  Acara Ceremonial (Rapat, Workshop, Peresmian, dll)
+KG.114 Permintaan/Pengiriman Alat/Fasilitas Kerja (Atk, Barang Cetakan, dll)
+KG.115 Perumahan Dinas/Mess/Wisma
+KG.200 - Hubungan Masyarakat
+KG.201 Keprotokolan
+KG.202 Dokumentasi Kegiatan Perusahaan
+KG.203 Pengumpulan, Pengolahan dan Penyajian Informasi
+(Buku/Kalender/Agenda/Film/Slide/Foto/Kliping/
+Reklame/Iklan/Sponsorship/Sumbangan)
+KG.204 Hubungan Eksternal (Lembaga Pemerintah, Lsm, Perusahaan, Lembaga
+Pendidikan, Media Masa, dll)
+KG.205  Dengar Pendapat/Hearing DPR
+KG.206 Bahan/materi pidato/sidang MPR, DPR, DPD, kabinet, DPRD, Muspida
+KG.207 Penerbitan Majalah, Buletin, Koran dan Jurnal
+KG.208  Publikasi Melalui Media Cetak maupun Elektronik
+KG.209  Pameran/Sayembara/Lomba, Festival, Pembuatan Spanduk dan Iklan
+KG.210  Penghargaan/Tanda Kenang-Kenangan/Administrasi Pemberian Penghargaan/
+Tanda Kenang-Kenangan Kepada Masyarakat yang Memiliki Jasa Prestasi Besar
+KG.211  Ucapan Terima Kasih, Ucapan Selamat, Bela Sungkawa, Permohonan Maaf
+KG.212 Appoinment/Audiensi
+KF - KEUANGAN
+KF.100 - Penyusunan Anggaran
+KF.101 Rkap, Rkad (Usulan, Anggaran, Persetujuan, Perubahan, dll) Keuangan
+Perusahaan
+KF.102 Investasi (Usulan, Anggaran, Persetujuan, Perubahan, Ijin Prinsip, SOT, Pricelist,
+dil) Keuangan Perusahaan
+KF.200 - Pendapatan
+KF.201  Pendapatan dari Kinerja Operasi (Angkutan Barang/Penumpang, Pso, Imo,
+Pendpt dll) Keuangan Perusahaan
+KF.202 Pendapatan dari Kinerja Non Operasi (Komersialisasi Aset Prasarana/Sarana)
+Keuangan Perusahaan
+KF.203   Pendapatan Lain-Lain (Rekonsiliasi, Royalty, Tgr, Denda,Deviden,Bunga Deposito,
+Pajak, Piutang dll) Keuangan Perusahaan
+KF.300 - Pembiayaan
+KF.301  Biaya Tetap (Gaji, Listrik, Air, Telepon, Pajak, Emolemen) Pada Keuangan
+Perusahaan
+KF.302  Biaya Tidak Tetap/Tidak Rutin (PSL, Tagihan Hutang) Pada Kegiatan Keuangan
+Perusahaan
+KF.303 Pajak Keuangan Perusahaan
+KF.304  Pencairan/Pembayaran Keuangan Perusahaan
+KF.400 - Bantuan/Pinjaman/Hibah
+KF.401 Pinjaman Keuangan dalam Negeri
+KF.402 Pinjaman Keuangan Luar Negeri
+KF.403 Penyertaan Modal Pemerintah (Bpybds)
+KF.404 Hibah Pada Proses Keuangan Perusahaan
+KF.500 - Pengelolaan Anggaran
+KF.501  Permohonan/Usulan Dana (Npd), Penghitungan Anggaran
+KF.502  Persetujuan (NPD ACC) Pada Proses Keuangan Perusahaan
+KF.503 Perbankan (Pemindahbukuan, Bank Garansi, Valas, Suku Bunga, Lc,
+Ekspor/Impor)
+KF.504  Bunga dalam Kegiatan Keuangan Perusahaan
+KF.600 - Pertanggungjawaban
+KF.601 Laporan Pertanggungjawaban/Penggunaan Dana Keuangan Perusahaan
+KF.602  Laporan Pertanggungjawaban Satker
+KK - SISTEM INFORMASI
+KK.100 - Perencanaan
+KK.101  Rencana Peraturan dan Kebijakan Sistem Informasi (IT Policy dan IT Governance)
+KK.102  Rencana Induk Sistem Informasi (IT Master Plan)
+KK.103 Katalog Pelayanan Sistem Informasi (IT Service Catalog)
+KK.104 IT Audit, Compliance, And Risk
+KK.105 Project Management Office (PMO)
+KK.200 - Design And Development
+KK.201 Core Application And Support Application Development
+KK.202 Analysis And Design
+KK.300 - IT Operation
+KK.301 Aplikasi Inti dan Aplikasi Pendukung (Core And Support Application)
+KK.302 Infrastruktur Sistem Informasi (IT Infrastructure)
+KK.303  Keamanan Sistem Informasi (IT Security)
+KK.304  Pertanyaan, Keluhan, Gangguan, Layanan dan Dukungan Teknis Sistem Informasi
+(Service Desk And User Support)
+KK.400 - IT Enterprise Resource Planning (ERP)
+KK.401  ERP Design And Development
+KK.402 ERP Operation
+KK.403 ERP Project Management Office

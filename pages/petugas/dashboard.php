@@ -10,10 +10,10 @@ if (!$unitId) {
     exit('Unit kerja Petugas belum ditetapkan.');
 }
 $name = (string) ($_SESSION['nama_lengkap'] ?? $_SESSION['username'] ?? 'Petugas');
-$stmt = $pdo->prepare("SELECT COUNT(*) total, COALESCE(SUM(status_arsip='Aktif'),0) aktif, COALESCE(SUM(status_arsip='Aktif' AND tanggal_jatuh_tempo > CURDATE()),0) retensi, COALESCE(SUM(status_arsip='Musnah' AND YEAR(updated_at)=YEAR(CURDATE())),0) musnah FROM arsip WHERE unit_id=:unit");
+$stmt = $pdo->prepare("SELECT COUNT(*) total, SUM(status_arsip='Inaktif') aktif, SUM(status_arsip='Inaktif' AND tanggal_jatuh_tempo > CURRENT_DATE) retensi, SUM(status_arsip='Musnah' AND YEAR(updated_at)=YEAR(CURDATE())) musnah FROM arsip WHERE unit_id=:unit");
 $stmt->execute(['unit' => $unitId]);
 $stats = $stmt->fetch() ?: ['total' => 0, 'aktif' => 0, 'retensi' => 0, 'musnah' => 0];
-$stmt = $pdo->prepare("SELECT COALESCE(SUM(status_arsip='Aktif' AND (tanggal_jatuh_tempo IS NULL OR tanggal_jatuh_tempo <= CURDATE())),0) aktif, COALESCE(SUM(status_arsip='Aktif' AND tanggal_jatuh_tempo > CURDATE()),0) retensi, COALESCE(SUM(status_arsip='Permanen'),0) permanen, COALESCE(SUM(status_arsip='Musnah'),0) musnah FROM arsip WHERE unit_id=:unit");
+$stmt = $pdo->prepare("SELECT SUM(status_arsip='Inaktif' AND (tanggal_jatuh_tempo IS NULL OR tanggal_jatuh_tempo <= CURRENT_DATE)) aktif, SUM(status_arsip='Inaktif' AND tanggal_jatuh_tempo > CURRENT_DATE) retensi, SUM(status_arsip='Permanen') permanen, SUM(status_arsip='Musnah') musnah FROM arsip WHERE unit_id=:unit");
 $stmt->execute(['unit' => $unitId]);
 $status = $stmt->fetch() ?: ['aktif' => 0, 'retensi' => 0, 'permanen' => 0, 'musnah' => 0];
 $stmt = $pdo->prepare("SELECT DATE_FORMAT(created_at,'%Y-%m') month_key, COUNT(*) jumlah FROM arsip WHERE unit_id=:unit AND created_at >= DATE_SUB(DATE_FORMAT(CURDATE(),'%Y-%m-01'), INTERVAL 5 MONTH) GROUP BY DATE_FORMAT(created_at,'%Y-%m')");
@@ -32,21 +32,21 @@ for ($i = 5; $i >= 0; $i--) {
 $stmt = $pdo->prepare('SELECT j.nama_jenis, COUNT(a.arsip_id) jumlah FROM jenis_surat j LEFT JOIN arsip a ON a.jenis_surat_id=j.jenis_surat_id AND a.unit_id=:unit GROUP BY j.jenis_surat_id,j.nama_jenis HAVING COUNT(a.arsip_id)>0 ORDER BY jumlah DESC,nama_jenis');
 $stmt->execute(['unit' => $unitId]);
 $types = $stmt->fetchAll();
-$stmt = $pdo->prepare("SELECT a.arsip_id,a.no_registrasi,a.perihal,v.tanggal_jatuh_tempo,v.status_jadwal FROM view_jadwal_pemusnahan v INNER JOIN arsip a ON a.arsip_id=v.arsip_id WHERE a.unit_id=:unit AND v.tanggal_jatuh_tempo BETWEEN CURDATE() AND DATE_ADD(CURDATE(),INTERVAL 30 DAY) ORDER BY v.tanggal_jatuh_tempo LIMIT 5");
+$stmt = $pdo->prepare("SELECT a.arsip_id,a.no_registrasi,a.perihal,v.tanggal_jatuh_tempo,v.status_jadwal FROM view_jadwal_pemusnahan v INNER JOIN arsip a ON a.arsip_id=v.arsip_id WHERE a.unit_id=:unit AND v.tanggal_jatuh_tempo BETWEEN CURRENT_DATE AND DATE_ADD(CURDATE(), INTERVAL 30 DAY) ORDER BY v.tanggal_jatuh_tempo LIMIT 5");
 $stmt->execute(['unit' => $unitId]);
 $reminders = $stmt->fetchAll();
 $stmt = $pdo->prepare('SELECT arsip_id,no_registrasi,no_surat,perihal,tanggal_surat,status_arsip,tanggal_jatuh_tempo FROM arsip WHERE unit_id=:unit ORDER BY created_at DESC LIMIT 5');
 $stmt->execute(['unit' => $unitId]);
 $items = $stmt->fetchAll();
-$chart = ['trend' => ['labels' => $trendLabels, 'data' => $trendData], 'status' => ['labels' => ['Aktif', 'Dalam Retensi', 'Permanen', 'Musnah'], 'data' => array_map('intval', [$status['aktif'], $status['retensi'], $status['permanen'], $status['musnah']])], 'types' => ['labels' => array_column($types, 'nama_jenis'), 'data' => array_map('intval', array_column($types, 'jumlah'))]];
+$chart = ['trend' => ['labels' => $trendLabels, 'data' => $trendData], 'status' => ['labels' => ['Inaktif', 'Dalam Retensi', 'Permanen', 'Musnah'], 'data' => array_map('intval', [$status['aktif'], $status['retensi'], $status['permanen'], $status['musnah']])], 'types' => ['labels' => array_column($types, 'nama_jenis'), 'data' => array_map('intval', array_column($types, 'jumlah'))]];
 function archiveStatus(array $item): string
 {
-    return $item['status_arsip'] === 'Aktif' && !empty($item['tanggal_jatuh_tempo']) && $item['tanggal_jatuh_tempo'] > date('Y-m-d') ? 'Dalam Retensi' : (string) $item['status_arsip'];
+    return $item['status_arsip'] === 'Inaktif' && !empty($item['tanggal_jatuh_tempo']) && $item['tanggal_jatuh_tempo'] > date('Y-m-d') ? 'Dalam Retensi' : (string) $item['status_arsip'];
 }
 function statusClass(string $status): string
 {
     return match ($status) {
-        'Aktif' => 'aktif',
+        'Inaktif' => 'aktif',
         'Dalam Retensi' => 'retensi',
         'Permanen' => 'permanen',
         'Musnah' => 'musnah',
@@ -847,6 +847,33 @@ function statusClass(string $status): string
             font-size: 18px
         }
 
+        .user-dropdown .logout-form {
+            margin: 0
+        }
+
+        .user-dropdown .logout-form button {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            gap: 10px;
+            padding: 10px 12px;
+            border: 0;
+            border-radius: 10px;
+            background: transparent;
+            color: #b42318;
+            font: inherit;
+            cursor: pointer;
+            text-align: left;
+            transition: background .15s ease, color .15s ease
+        }
+
+        .user-dropdown .logout-form button:hover,
+        .user-dropdown .logout-form button:focus-visible {
+            background: #fff1f2;
+            color: #912018;
+            outline: 0
+        }
+
         @media(max-width:760px) {
             .user-avatar img {
                 display: block !important;
@@ -948,7 +975,7 @@ function statusClass(string $status): string
             <details class="user-menu">
                 <summary><span class="user-avatar"><?= profileAvatar('../..', $name) ?></span><span class="user-summary-text"><b><?= e($name) ?></b><small>Petugas</small></span><i class="user-summary-chevron material-symbols-outlined">expand_more</i></summary>
                 <div class="user-dropdown">
-                    <div class="user-dropdown-header"><b><?= e($name) ?></b><small>Petugas</small></div><a href="../profile/ubah-profil.php"><i class="material-symbols-outlined">person</i>Ubah Profil</a><a href="../profile/ubah-password.php"><i class="material-symbols-outlined">key</i>Ubah Password</a><a href="../../logout.php"><i class="material-symbols-outlined">logout</i>Logout</a>
+                    <div class="user-dropdown-header"><b><?= e($name) ?></b><small>Petugas</small></div><a href="../profile/ubah-profil.php"><i class="material-symbols-outlined">person</i>Ubah Profil</a><a href="../profile/ubah-password.php"><i class="material-symbols-outlined">key</i>Ubah Password</a><?= logoutForm('../../logout.php') ?>
                 </div>
             </details>
         </header>
@@ -964,7 +991,7 @@ function statusClass(string $status): string
                     <div><small>Total Arsip</small><strong><?= (int) $stats['total'] ?></strong></div><i class="material-symbols-outlined">inventory_2</i>
                 </article>
                 <article class="stat s-cyan">
-                    <div><small>Arsip Aktif</small><strong><?= (int) $stats['aktif'] ?></strong></div><i class="material-symbols-outlined">task_alt</i>
+                    <div><small>Arsip Inaktif</small><strong><?= (int) $stats['aktif'] ?></strong></div><i class="material-symbols-outlined">task_alt</i>
                 </article>
                 <article class="stat s-purple">
                     <div><small>Dalam Retensi</small><strong><?= (int) $stats['retensi'] ?></strong></div><i class="material-symbols-outlined">hourglass_top</i>

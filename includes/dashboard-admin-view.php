@@ -22,7 +22,7 @@ $appBase = preg_replace('~/pages/admin$~', '', $appBase) ?: '';
         </div>
         <nav>
             <p>Menu Administrasi</p><a class="nav-active" data-admin-route="dashboard" href="#dashboard">Dashboard</a><a data-admin-route="users" href="#users">Pengelolaan Pengguna</a>
-            <p>Master Data</p><a data-admin-route="unit" href="#unit">Unit Kerja</a><a data-admin-route="ruangan" href="#ruangan">Ruangan</a><a data-admin-route="lemari" href="#lemari">Lemari</a><a data-admin-route="rak" href="#rak">Rak</a><a data-admin-route="jenis-surat" href="#jenis-surat">Jenis Surat</a><a data-admin-route="klasifikasi" href="#klasifikasi">Klasifikasi Arsip</a>
+            <p>Master Data</p><a data-admin-route="unit" href="#unit">Unit Kerja</a><a data-admin-route="jenis-surat" href="#jenis-surat">Jenis Surat</a><a data-admin-route="klasifikasi" href="#klasifikasi">Klasifikasi Arsip</a>
         </nav>
     </aside>
     <div class="admin-main">
@@ -31,7 +31,7 @@ $appBase = preg_replace('~/pages/admin$~', '', $appBase) ?: '';
             <details class="user-menu">
                 <summary><span class="user-avatar"><?= profileAvatar('../..', (string) ($_SESSION['nama_lengkap'] ?? $_SESSION['username'] ?? 'User')) ?></span><span class="user-summary-text"><b><?= e((string)($_SESSION['nama_lengkap'] ?? $_SESSION['username'] ?? 'User')) ?></b><small><?= e((string)($_SESSION['role_name'] ?? 'Role')) ?></small></span><i class="user-summary-chevron material-symbols-outlined">expand_more</i></summary>
                 <div class="user-dropdown">
-                    <div class="user-dropdown-header"><b><?= e((string)($_SESSION['nama_lengkap'] ?? $_SESSION['username'] ?? 'User')) ?></b><small><?= e((string)($_SESSION['role_name'] ?? 'Role')) ?></small></div><a href="<?= e($appBase) ?>/pages/profile/ubah-profil.php"><i class="material-symbols-outlined">person</i>Ubah Profil</a><a href="<?= e($appBase) ?>/pages/profile/ubah-password.php"><i class="material-symbols-outlined">key</i>Ubah Password</a><a href="<?= e($appBase) ?>/logout.php"><i class="material-symbols-outlined">logout</i>Logout</a>
+                    <div class="user-dropdown-header"><b><?= e((string)($_SESSION['nama_lengkap'] ?? $_SESSION['username'] ?? 'User')) ?></b><small><?= e((string)($_SESSION['role_name'] ?? 'Role')) ?></small></div><a href="<?= e($appBase) ?>/pages/profile/ubah-profil.php"><i class="material-symbols-outlined">person</i>Ubah Profil</a><a href="<?= e($appBase) ?>/pages/profile/ubah-password.php"><i class="material-symbols-outlined">key</i>Ubah Password</a><?= logoutForm($appBase . '/logout.php') ?>
                 </div>
             </details>
         </header>
